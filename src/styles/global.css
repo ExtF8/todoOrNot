@@ -11,8 +11,10 @@
     --bodyTextColorGray: #313131;
     --topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
     --headerFontSize: clamp(1rem, 2vw, 2rem);
+    --headerMobileFontSize: clamp(0.5rem, 3vw, 1rem);
     --bodyFontSize: 1rem;
     --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+    --dialogPadding: clamp(2.75rem, 6.82vw, 5.25rem) 1rem;
 }
 
 body {
@@ -23,6 +25,8 @@ body {
     color: var(--bodyTextColor);
     background-color: #fff; /* Default background color */
 }
+
+
 
 #content {
     position: relative;

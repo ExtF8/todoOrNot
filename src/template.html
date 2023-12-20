@@ -122,9 +122,12 @@
                             </ul>
                         </div>
                     </nav>
-                    <a href="" class="cs-button-solid cs-nav-button"
-                        >Add New </a
+                    <button
+                        class="cs-button-solid cs-nav-button"
+                        id="newTodoButton"
                     >
+                        Add New
+                    </button>
                     <!--Dark Mode toggle, uncomment button code if you want to enable a dark mode toggle-->
                     <button id="dark-mode-toggle" aria-label="dark mode toggle">
                         <svg
@@ -150,6 +153,90 @@
                     </button>
                 </div>
             </header>
+            <dialog id="todo-form-container">
+                <div class="cs-container">
+                    <div class="cs-content">
+                        <span class="cs-topper">Contact</span>
+                        <h2 class="cs-title">Get in Touch</h2>
+                        <p class="cs-text">
+                            title, description, dueDate and priority
+                        </p>
+                    </div>
+                    <form id="todo-form" name="New Todo" method="post">
+                        <label class="cs-label">
+                            Title
+                            <input
+                                class="cs-input"
+                                required
+                                type="text"
+                                id="title"
+                                name="title"
+                                placeholder="Title"
+                            />
+                        </label>
+                        <label class="cs-label">
+                            Project
+                            <input
+                                class="cs-input"
+                                type="text"
+                                id="project"
+                                name="project"
+                                placeholder="Create new or Select existing project"
+                            />
+                        </label>
+                        <label class="cs-label">
+                            Description
+                            <input
+                                class="cs-input"
+                                type="text"
+                                id="description"
+                                name="description"
+                                placeholder="Why?"
+                            />
+                        </label>
+                        <label class="cs-label">
+                            When?
+                            <input
+                                class="cs-input"
+                                required
+                                type="text"
+                                id="dueDate"
+                                name="dueDate"
+                                placeholder="When?"
+                            />
+                        </label>
+                        <label class="cs-label">
+                            Priority
+                            <input
+                                class="cs-input"
+                                type="text"
+                                id="priority"
+                                name="priority"
+                                placeholder="Priority"
+                            />
+                        </label>
+                        <label class="cs-label label-note">
+                            Note
+                            <textarea
+                                class="cs-input cs-textarea"
+                                name="note"
+                                id="note"
+                                placeholder="Write note..."
+                            ></textarea>
+                        </label>
+                        <button class="cs-button-solid cs-submit" type="submit">
+                            Add
+                        </button>
+                    </form>
+                </div>
+            </dialog>
         </div>
+        <script>
+            const newTodoButton = document.getElementById('newTodoButton');
+            const dialog = document.querySelector('dialog');
+            newTodoButton.addEventListener('click', () => {
+                dialog.showModal();
+            });
+        </script>
     </body>
 </html>

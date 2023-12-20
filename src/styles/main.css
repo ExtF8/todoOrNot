@@ -1,73 +1,4 @@
 /*-- -------------------------- -->
-<---      Dark Mode Toggle      -->
-<--- -------------------------- -*/
-/* Mobile - 360px */
-@media only screen and (min-width: 0rem) {
-    body.dark-mode #dark-mode-toggle .cs-sun {
-        opacity: 1;
-        transform: translate(-50%, -50%);
-    }
-
-    body.dark-mode #dark-mode-toggle .cs-moon {
-        opacity: 0;
-        transform: translate(-50%, -150%);
-        fill: #fff;
-    }
-
-    #dark-mode-toggle {
-        width: 3rem;
-        height: 3rem;
-        padding: 0;
-        background: transparent;
-        border: none;
-        display: block;
-        position: absolute;
-        top: 0.625rem;
-        right: 4.375rem;
-        z-index: 1000;
-        overflow: hidden;
-    }
-
-    #dark-mode-toggle img,
-    #dark-mode-toggle svg {
-        width: 1.25rem;
-        height: 1.25rem;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        pointer-events: none;
-    }
-
-    #dark-mode-toggle .cs-moon {
-        z-index: 2;
-        transition: transform 0.3s, opacity 0.3s;
-    }
-
-    #dark-mode-toggle .cs-sun {
-        opacity: 0;
-        z-index: 1;
-        transform: translate(-50%, 100%);
-        transition: transform 0.3s, opacity 0.3s;
-    }
-}
-
-/* Desktop - 1024px */
-@media only screen and (min-width: 64rem) {
-    #dark-mode-toggle {
-        margin: 0;
-        position: relative;
-        top: auto;
-        right: auto;
-        transform: none;
-    }
-
-    #dark-mode-toggle:hover {
-        cursor: pointer;
-    }
-}
-
-/*-- -------------------------- -->
   <---     Mobile Navigation      -->
   <--- -------------------------- -*/
 /* Mobile - 1023px */
@@ -131,14 +62,13 @@
         max-width: 9.125rem;
         height: 100%;
         margin: 0 auto 0 0;
-        /* prevents padding and border from affecting height and width */
-        box-sizing: border-box;
-        padding: 0;
         display: flex;
         justify-content: center;
         align-items: center;
         z-index: 10;
+        font-size: var(--headerMobileFontSize);
     }
+
     #cs-navigation .page-title h1 {
         font-size: 3em;
     }
@@ -338,7 +268,38 @@
     }
 
     #cs-navigation .cs-button-solid {
-        display: none;
+        font-size: 1rem;
+        font-weight: 700;
+        /* 46px - 56px */
+        line-height: clamp(2.875em, 5.5vw, 3.5em);
+        text-align: center;
+        text-decoration: none;
+        min-width: 9.375rem;
+        padding: 0 1.5rem;
+        color: #fff;
+        background-color: var(--primary);
+        border-radius: 0.25rem;
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+    }
+
+    #cs-navigation .cs-button-solid:before {
+        content: "";
+        width: 0%;
+        height: 100%;
+        background: #000;
+        opacity: 1;
+        border-radius: 0.25rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: width 0.3s;
+    }
+
+    #cs-navigation .cs-button-solid:hover:before {
+        width: 100%;
     }
 }
 
@@ -668,9 +629,6 @@
         text-align: center;
         text-decoration: none;
         min-width: 9.375rem;
-        margin: 0;
-        /* prevents padding from adding to the width */
-        box-sizing: border-box;
         padding: 0 1.5rem;
         color: #fff;
         background-color: var(--primary);
@@ -711,5 +669,266 @@
 
     body.dark-mode #cs-navigation .cs-li-link:before {
         background-color: var(--primaryLight);
+    }
+}
+
+
+/*-- -------------------------- -->
+<---       Todo container       -->
+<--- -------------------------- -*/
+
+/* Mobile - 360px */
+@media only screen and (min-width: 0rem) {
+    #todo-form-container {
+        padding: var(--dialogPadding);
+    }
+
+    #todo-form-container .cs-container {
+        width: 100%;
+        /* changes to 1280px at desktop */
+        max-width: 50rem;
+        margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #todo-form-container .cs-content {
+        /* set text align to left if content needs to be left aligned */
+        text-align: left;
+        width: 100%;
+        margin: 0 0 2rem 0;
+        display: flex;
+        flex-direction: column;
+        /* centers content horizontally, set to flex-start to left align */
+        align-items: flex-start;
+    }
+
+    #todo-form-container .cs-topper {
+        font-size: var(--topperFontSize);
+        line-height: 1.2em;
+        text-transform: uppercase;
+        text-align: inherit;
+        letter-spacing: 0.1em;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.25rem;
+        display: block;
+    }
+
+    #todo-form-container .cs-title {
+        font-size: var(--headerFontSize);
+        font-weight: 900;
+        line-height: 1.2em;
+        text-align: inherit;
+        max-width: 43.75rem;
+        margin: 0 0 1rem 0;
+        color: var(--headerColor);
+        position: relative;
+    }
+
+    #todo-form-container .cs-text {
+        font-size: var(--bodyFontSize);
+        line-height: 1.5em;
+        text-align: inherit;
+        width: 100%;
+        max-width: 40.625rem;
+        margin: 0;
+        color: var(--bodyTextColor);
+    }
+
+    #todo-form-container #todo-form {
+        width: 100%;
+    }
+
+    #todo-form-container .cs-label {
+        font-size: 1rem;
+        line-height: 1.5em;
+        font-weight: 700;
+        /* 12px - 20px */
+        margin-bottom: clamp(0.75rem, 1.3em, 1.25rem);
+        color: var(--headerColor);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    #todo-form-container .label-note {
+        /* 32px - 48px */
+        margin-bottom: clamp(2rem, 5.3vw, 3rem);
+    }
+
+    #todo-form-container .cs-input,
+    #todo-form-container .cs-textarea {
+        font-size: 1rem;
+        width: 100%;
+        height: 4rem;
+        margin-top: 0.25rem;
+        padding-left: 1.25rem;
+        border: 1px solid #b4b2c7;
+        border-radius: 0.5rem;
+        /* prevents border & padding from affecting height */
+        box-sizing: border-box;
+        transition: border 0.3s;
+    }
+
+    #todo-form-container .cs-input:hover,
+    #todo-form-container .cs-textarea:hover {
+        border: 1px solid var(--primary);
+    }
+
+    #todo-form-container .cs-textarea {
+        font-family: inherit;
+        padding-top: 1.25rem;
+        min-height: 7.5rem;
+    }
+
+    #todo-form-container .cs-button-solid {
+        font-size: 1rem;
+        /* 46px - 56px */
+        line-height: clamp(2.875rem, 5.5vw, 3.5rem);
+        text-decoration: none;
+        font-weight: 700;
+        text-align: center;
+        color: #fff;
+        min-width: 9.375rem;
+        padding: 0 1.5rem;
+        background-color: var(--primary);
+        border-radius: 0.25rem;
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        /* prevents padding from adding to the width */
+        box-sizing: border-box;
+    }
+
+    #todo-form-container .cs-button-solid:before {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 0%;
+        background: #000;
+        opacity: 1;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        border-radius: 0.25rem;
+        transition: width 0.3s;
+    }
+
+    #todo-form-container .cs-button-solid:hover:before {
+        width: 100%;
+    }
+
+    #todo-form-container .cs-submit {
+        width: 100%;
+        border: none;
+        border-radius: 0.5rem;
+    }
+
+    #todo-form-container .cs-ul {
+        padding: 0;
+        margin: 0;
+    }
+
+    #todo-form-container .cs-li {
+        list-style: none;
+        /* 16px - 20px */
+        margin-bottom: clamp(1rem, 2vw, 1.25rem);
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    #todo-form-container .cs-li:hover .cs-icon-wrapper {
+        transform: scale(1.2);
+    }
+
+    #todo-form-container .cs-li:last-of-type {
+        margin-bottom: 0;
+    }
+
+    #todo-form-container .cs-header {
+        /* 16px - 20px */
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        font-weight: 700;
+        line-height: 1.2em;
+        margin-bottom: 0.5rem;
+        color: var(--headerColor);
+        display: block;
+    }
+
+    
+}
+
+/* Tablet - 700px */
+@media only screen and (min-width: 43.75rem) {
+    #todo-form-container #todo-form {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    #todo-form-container .cs-label {
+        width: 48%;
+    }
+
+    #todo-form-container .label-note {
+        width: 100%;
+    }
+
+    #todo-form-container .cs-button-solid {
+        margin-left: 0;
+    }
+
+}
+
+/* Small Desktop - 1024px */
+@media only screen and (min-width: 64rem) {
+    #todo-form-container .cs-container {
+        max-width: 32.625rem;
+        /* 60px - 108px */
+        gap: clamp(0.75rem, 0.9vw, 0.75rem);
+    }
+
+    #todo-form-container .cs-label {
+        width: 100%;
+    }
+
+}
+
+/* Dark Mode */
+@media only screen and (min-width: 0rem) {
+    body.dark-mode #todo-form-container {
+        background-color: var(--accent);
+        width: 90vh;
+    }
+
+    body.dark-mode #todo-form-container .cs-text,
+    body.dark-mode #todo-form-container .cs-title,
+    body.dark-mode #todo-form-container .cs-label{
+
+        color: var(--bodyTextColorWhite);
+    }
+
+    body.dark-mode #todo-form-container #todo-form label,
+    body.dark-mode #todo-form-container #todo-form input,
+    body.dark-mode #todo-form-container #todo-form textarea {
+        background-color: transparent;
+        color: var(--bodyTextColorWhite);
+    }
+
+    body.dark-mode #todo-form-container #todo-form label::placeholder,
+    body.dark-mode #todo-form-container #todo-form input::placeholder,
+    body.dark-mode #todo-form-container #todo-form textarea::placeholder {
+        /* lighten up the color of the text by 40%*/
+        filter: brightness(1.4);
+    }
+
+    body.dark-mode #todo-form-container .cs-header,
+    body.dark-mode #todo-form-container .cs-link {
+        color: var(--bodyTextColorWhite);
     }
 }

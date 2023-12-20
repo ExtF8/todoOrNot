@@ -7,6 +7,9 @@ import './styles/dark.css';
 import darkModeToggler from './modules/utility/darkMode.js';
 import mobileNavigationToggling from './modules/utility/mobileNavigation.js';
 
+// Import images
+import logo from './assets/img/logo/todoOrNotLogo.png'
+
 // Importing page loader functions
 
 
@@ -22,26 +25,26 @@ let pageNames = ['home', 'menu', 'contacts'];
 let content = document.querySelector('#main-container');
 
 // Load the initial home page content
-homePageLoader(content);
+// homePageLoader(content);
 
 /**
  * Set up click event listeners for tab navigation in the header
  * This allows switching between different pages (home, menu, contacts) and
  * ensures the appropriate content is loaded and displayed
  */
-pageNames.forEach((pageName) => {
-    const button = document.getElementById(pageName);
-    button.addEventListener('click', () => {
-        if (button.id == 'home') {
-            homePageLoader(content);
-        } else if (button.id == 'menu') {
-            menuPageLoader(content);
-        } else {
-            contactsPageLoader(content);
-        }
-        updateNavigationActiveState(pageName);
-    });
-});
+// pageNames.forEach((pageName) => {
+//     const button = document.getElementById(pageName);
+//     button.addEventListener('click', () => {
+//         if (button.id == 'home') {
+//             homePageLoader(content);
+//         } else if (button.id == 'menu') {
+//             menuPageLoader(content);
+//         } else {
+//             contactsPageLoader(content);
+//         }
+//         updateNavigationActiveState(pageName);
+//     });
+// });
 
 /**
  * Updates the active state of navigation buttons and removes active state in mobile navigation

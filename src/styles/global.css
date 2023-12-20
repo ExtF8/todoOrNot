@@ -1,0 +1,77 @@
+/* Global Styles and Variables */
+:root {
+    --primary: #ff6a3e;
+    --primaryLight: #ffba43;
+    --secondary: #ffba43;
+    --secondaryLight: #ffba43;
+    --headerColor: #1a1a1a;
+    --headerColorDark: #082032;
+    --headerColorMedium: #2c394b;
+    --bodyTextColor: #4e4b66;
+    --bodyTextColorGray: #313131;
+    --topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
+    --headerFontSize: clamp(1rem, 2vw, 2rem);
+    --bodyFontSize: 1rem;
+    --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: auto;
+    font-size: var(--bodyFontSize);
+    color: var(--bodyTextColor);
+    background-color: #fff; /* Default background color */
+}
+
+#content {
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 200px;
+}
+
+footer {
+    position: absolute;
+    margin-top: auto;
+    bottom: 0;
+    width: 100%;
+    font-family: inherit;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+/* Basic Typography */
+.cs-topper, .cs-title, .cs-text {
+    text-align: inherit;
+}
+
+.cs-topper {
+    font-size: var(--topperFontSize);
+    font-weight: 700;
+    color: var(--primary);
+    margin-bottom: 0.25rem;
+}
+
+.cs-title {
+    font-size: var(--headerFontSize);
+    font-weight: 900;
+    color: var(--headerColor);
+}
+
+.cs-text {
+    color: var(--bodyTextColor);
+}
+
+/* Navigation Links */
+#cs-navigation .page-title, #cs-navigation>.page-title:visited {
+    text-decoration: none;
+    color: var(--headerColorMedium);
+}
+
+#cs-navigation .cs-li-link {
+    cursor: pointer;
+}

@@ -14,7 +14,7 @@
     --headerMobileFontSize: clamp(0.5rem, 3vw, 1rem);
     --bodyFontSize: 1rem;
     --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
-    --dialogPadding: clamp(2.75rem, 6.82vw, 5.25rem) 1rem;
+    --dialogPadding: clamp(0.75rem, 1.82vw, 4.25rem) 1rem;
 }
 
 body {
@@ -23,10 +23,76 @@ body {
     height: auto;
     font-size: var(--bodyFontSize);
     color: var(--bodyTextColor);
-    background-color: #fff; /* Default background color */
+    background-color: #fff;
+    /* Default background color */
 }
 
+dialog {
+    border: none !important;
+    /* margin: 0; */
+    padding: var(--sectionPadding);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: auto;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    box-sizing: content-box;
+}
 
+button {
+    all: unset;
+}
+
+#dialog-close-btn {
+    border: none;
+    align-self: flex-end;
+}
+
+.close-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 10px;
+    width: 26px;
+    height: 26px;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.close {
+    height: 4px;
+    width: 25px;
+    position: absolute;
+    background-color: #F4A259;
+    border-radius: 2px;
+}
+
+.leftright {
+    transform: rotate(45deg);
+    transition: all .3s ease-in;
+}
+
+.rightleft {
+    transform: rotate(-45deg);
+    transition: all .3s ease-in;
+}
+
+.close-container:hover .leftright {
+    transform: rotate(-45deg);
+    background-color: #F25C66;
+}
+
+.close-container:hover .rightleft {
+    transform: rotate(45deg);
+    background-color: #F25C66;
+}
+
+.close-container:hover label {
+    opacity: 1;
+}
 
 #content {
     position: relative;
@@ -49,7 +115,9 @@ footer {
 }
 
 /* Basic Typography */
-.cs-topper, .cs-title, .cs-text {
+.cs-topper,
+.cs-title,
+.cs-text {
     text-align: inherit;
 }
 
@@ -71,7 +139,8 @@ footer {
 }
 
 /* Navigation Links */
-#cs-navigation .page-title, #cs-navigation>.page-title:visited {
+#cs-navigation .page-title,
+#cs-navigation>.page-title:visited {
     text-decoration: none;
     color: var(--headerColorMedium);
 }

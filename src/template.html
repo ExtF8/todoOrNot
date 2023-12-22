@@ -153,16 +153,22 @@
                     </button>
                 </div>
             </header>
-            <dialog id="todo-form-container">
+        </div>
+        <dialog id="dialog">
+            <section id="todo-form-container">
                 <div class="cs-container">
                     <div class="cs-content">
-                        <span class="cs-topper">Contact</span>
-                        <h2 class="cs-title">Get in Touch</h2>
+                        <button id="dialog-close-btn" class="close-container" onclick="performClose()">
+                            <div class="leftright close"></div>
+                            <div class="rightleft close"></div>
+                        </button>
+                        <span class="cs-topper">Add new</span>
+                        <h2 class="cs-title">Todo</h2>
                         <p class="cs-text">
                             title, description, dueDate and priority
                         </p>
                     </div>
-                    <form id="todo-form" name="New Todo" method="post">
+                    <form id="todo-form" name="New Todo" method="dialog">
                         <label class="cs-label">
                             Title
                             <input
@@ -181,7 +187,7 @@
                                 type="text"
                                 id="project"
                                 name="project"
-                                placeholder="Create new or Select existing project"
+                                placeholder="Create new or select existing project"
                             />
                         </label>
                         <label class="cs-label">
@@ -215,7 +221,7 @@
                                 placeholder="Priority"
                             />
                         </label>
-                        <label class="cs-label label-note">
+                        <!-- <label class="cs-label label-note">
                             Note
                             <textarea
                                 class="cs-input cs-textarea"
@@ -223,20 +229,23 @@
                                 id="note"
                                 placeholder="Write note..."
                             ></textarea>
-                        </label>
+                        </label> -->
                         <button class="cs-button-solid cs-submit" type="submit">
                             Add
                         </button>
                     </form>
                 </div>
-            </dialog>
-        </div>
+            </section>
+        </dialog>
         <script>
             const newTodoButton = document.getElementById('newTodoButton');
             const dialog = document.querySelector('dialog');
             newTodoButton.addEventListener('click', () => {
                 dialog.showModal();
             });
+            function performClose() {
+                dialog.close();
+            }
         </script>
     </body>
 </html>

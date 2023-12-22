@@ -9,12 +9,16 @@
     --headerColorMedium: #2c394b;
     --bodyTextColor: #4e4b66;
     --bodyTextColorGray: #313131;
+    --priority-low-color: #49801a;
+    --priority-medium-color: #e9ab2a;
+    --priority-high-color: #da340d;
     --topperFontSize: clamp(0.8125rem, 1.6vw, 1rem);
     --headerFontSize: clamp(1rem, 2vw, 2rem);
     --headerMobileFontSize: clamp(0.5rem, 3vw, 1rem);
     --bodyFontSize: 1rem;
     --sectionPadding: clamp(3.75rem, 7.82vw, 6.25rem) 1rem;
     --dialogPadding: clamp(0.75rem, 1.82vw, 4.25rem) 1rem;
+
 }
 
 body {
@@ -41,8 +45,13 @@ dialog {
     box-sizing: content-box;
 }
 
-button {
+button,
+ul {
     all: unset;
+}
+
+button:hover {
+    cursor: pointer;
 }
 
 #dialog-close-btn {

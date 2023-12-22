@@ -818,26 +818,76 @@
         border-radius: 0.5rem;
     }
 
-    #todo-form-container .cs-ul {
+    #todo-form-container .priority-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-evenly;
+        width: 100%;
+        margin-top: 0.25rem;
+        gap: 0.1vw;
+        padding-right: 0.1vw;
+    }
+
+
+    #todo-form-container .priority-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /* margin: 0 0.5rem 0 0.5rem; */
+        padding: .5rem 1rem;
+        /* text-align: center; */
+        width: 40%;
+        height: 4vh;
+        border: 1px solid #b4b2c7;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        z-index: 1;
+    }
+
+    #todo-form-container #priority label.low {
+        border-color: var(--priority-low-color);
+    }
+
+    #todo-form-container #priority label.low:hover {
+        background-color: var(--priority-low-color);
+    }
+
+    .low-selected {
+        background-color: var(--priority-low-color);
+    }
+
+    #todo-form-container #priority label.medium {
+        border-color: var(--priority-medium-color);
+    }
+
+    #todo-form-container #priority label.medium:hover {
+        background-color: var(--priority-medium-color);
+    }
+
+    .medium-selected {
+        background-color: var(--priority-medium-color);
+    }
+
+    #todo-form-container #priority label.high {
+        border-color: var(--priority-high-color);
+    }
+
+    #todo-form-container #priority label.high:hover {
+        background-color: var(--priority-high-color);
+    }
+
+    .high-selected {
+        background-color: var(--priority-high-color);
+    }
+
+
+    #todo-form-container input[type="radio"] {
+        position: relative;
+        height: 1px;
+        width: 1px;
         padding: 0;
         margin: 0;
-    }
-
-    #todo-form-container .cs-li {
-        list-style: none;
-        /* 16px - 20px */
-        margin-bottom: clamp(1rem, 2vw, 1.25rem);
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-    }
-
-    #todo-form-container .cs-li:hover .cs-icon-wrapper {
-        transform: scale(1.2);
-    }
-
-    #todo-form-container .cs-li:last-of-type {
-        margin-bottom: 0;
+        opacity: 0;
     }
 
     #todo-form-container .cs-header {
@@ -848,6 +898,25 @@
         margin-bottom: 0.5rem;
         color: var(--headerColor);
         display: block;
+    }
+
+    #todo-form-container .add-project-button {
+        align-self: flex-end;
+        background: var(--primary);
+        border-radius: 0.2em;
+        /* color: var(--color-blue); */
+        cursor: pointer;
+        font-weight: 700;
+        /* line-height: 1em; */
+        padding: 0.25em 1.3em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        top: -53px;
+        right: 10px;
+        /* width: 50px; */
+        height: 34px;
     }
 
 
@@ -880,49 +949,15 @@
 @media only screen and (min-width: 64rem) {
 
 
-
     #todo-form-container .cs-container {
         max-width: 32.625rem;
         /* 60px - 108px */
         gap: clamp(0.75rem, 0.9vw, 0.75rem);
+        background-color: linen;
     }
 
     #todo-form-container .cs-label {
         width: 100%;
     }
 
-}
-
-/* Dark Mode */
-@media only screen and (min-width: 0rem) {
-    body.dark-mode #todo-form-container .cs-container {
-        background-color: var(--accent);
-
-    }
-
-    body.dark-mode #todo-form-container .cs-text,
-    body.dark-mode #todo-form-container .cs-title,
-    body.dark-mode #todo-form-container .cs-label {
-
-        color: var(--bodyTextColorWhite);
-    }
-
-    body.dark-mode #todo-form-container #todo-form label,
-    body.dark-mode #todo-form-container #todo-form input,
-    body.dark-mode #todo-form-container #todo-form textarea {
-        background-color: transparent;
-        color: var(--bodyTextColorWhite);
-    }
-
-    body.dark-mode #todo-form-container #todo-form label::placeholder,
-    body.dark-mode #todo-form-container #todo-form input::placeholder,
-    body.dark-mode #todo-form-container #todo-form textarea::placeholder {
-        /* lighten up the color of the text by 40%*/
-        filter: brightness(1.4);
-    }
-
-    body.dark-mode #todo-form-container .cs-header,
-    body.dark-mode #todo-form-container .cs-link {
-        color: var(--bodyTextColorWhite);
-    }
 }

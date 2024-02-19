@@ -21,7 +21,13 @@ export default function homePageLoader(content) {
     clearPage(content);
 
     // Select the main content area in the DOM
-    const mainContent = content;
+
+    const homePageContent = content;
+    console.log('homePageContent: ', homePageContent)
 
     // Create and append the main section and content div
+    const div = createDiv('class', 'test')
+
+    console.log(div)
+    homePageContent.appendChild(div)
 }

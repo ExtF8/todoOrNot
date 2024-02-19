@@ -7,7 +7,11 @@ import './styles/dark.css';
 import darkModeToggler from './modules/utility/darkMode.js';
 import mobileNavigationToggling from './modules/utility/mobileNavigation.js';
 
+// Import images
+import logo from './assets/img/logo/todoOrNotLogo.png'
+
 // Importing page loader functions
+import homePageLoader from './modules/pageLoaders/homePageLoader.js';
 
 
 // Activate dark mode toggle functionality
@@ -17,31 +21,32 @@ darkModeToggler();
 mobileNavigationToggling();
 
 // Global variables setup
-let pageNames = ['home', 'menu', 'contacts'];
+let pageNames = ['home', 'today', 'week', 'projects', 'notes'];
 // let currentTab = pageNames[0];
-let content = document.querySelector('#main-container');
+let content = document.getElementById('content');
 
 // Load the initial home page content
 homePageLoader(content);
+console.log('main container: ', content)
 
 /**
  * Set up click event listeners for tab navigation in the header
  * This allows switching between different pages (home, menu, contacts) and
  * ensures the appropriate content is loaded and displayed
  */
-pageNames.forEach((pageName) => {
-    const button = document.getElementById(pageName);
-    button.addEventListener('click', () => {
-        if (button.id == 'home') {
-            homePageLoader(content);
-        } else if (button.id == 'menu') {
-            menuPageLoader(content);
-        } else {
-            contactsPageLoader(content);
-        }
-        updateNavigationActiveState(pageName);
-    });
-});
+// pageNames.forEach((pageNames) => {
+//     const button = document.getElementById(pageNames);
+//     button.addEventListener('click', () => {
+//         if (button.id == 'home') {
+//             homePageLoader(content);
+//         } else if (button.id == 'today') {
+//             menuPageLoader(content);
+//         } else {
+//             contactsPageLoader(content);
+//         }
+//         updateNavigationActiveState(pageNames);
+//     });
+// });
 
 /**
  * Updates the active state of navigation buttons and removes active state in mobile navigation
@@ -49,7 +54,7 @@ pageNames.forEach((pageName) => {
  */
 export function updateNavigationActiveState(activeButtonId) {
     // Navigation button IDs
-    const navigationButtons = ['home', 'menu', 'contacts'];
+    const navigationButtons = ['home', 'today', 'contacts'];
 
     // Selecting elements related to mobile navigation
     const body = document.querySelector('body');

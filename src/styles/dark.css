@@ -121,3 +121,37 @@
         fill: #fff;
     }
 }
+
+/* Dark Mode */
+@media only screen and (min-width: 0rem) {
+    body.dark-mode #todo-form-container .cs-container {
+        background-color: var(--accent);
+
+    }
+
+    body.dark-mode #todo-form-container .cs-text,
+    body.dark-mode #todo-form-container .cs-title,
+    body.dark-mode #todo-form-container .cs-label {
+
+        color: var(--bodyTextColorWhite);
+    }
+
+    body.dark-mode #todo-form-container #todo-form label,
+    body.dark-mode #todo-form-container #todo-form input,
+    body.dark-mode #todo-form-container #todo-form textarea {
+        background-color: transparent;
+        color: var(--bodyTextColorWhite);
+    }
+
+    body.dark-mode #todo-form-container #todo-form label::placeholder,
+    body.dark-mode #todo-form-container #todo-form input::placeholder,
+    body.dark-mode #todo-form-container #todo-form textarea::placeholder {
+        /* lighten up the color of the text by 40%*/
+        filter: brightness(1.4);
+    }
+
+    body.dark-mode #todo-form-container .cs-header,
+    body.dark-mode #todo-form-container .cs-link {
+        color: var(--bodyTextColorWhite);
+    }
+}

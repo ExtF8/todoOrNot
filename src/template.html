@@ -162,7 +162,7 @@
                         <button
                             id="dialog-close-btn"
                             class="close-container"
-                            onclick="performClose()"
+
                         >
                             <div class="leftright close"></div>
                             <div class="rightleft close"></div>
@@ -192,16 +192,16 @@
                                 type="text"
                                 id="project"
                                 name="project"
-                                placeholder="Create new or select existing project"
+                                placeholder="Create new or add to existing project"
                             />
-                            <button
+                            <!-- <button
                                 class="add-project-button"
                                 type="add"
                                 name="add-project"
                                 id="add-project"
                             >
                                 +
-                            </button>
+                            </button> -->
                         </label>
                         <label class="cs-label">
                             Description
@@ -219,7 +219,7 @@
                                 id="dueDate"
                                 class="cs-input date"
                                 name="dueDate"
-                                type="date"
+                                type="text"
                                 placeholder="When?"
                                 required
                             />
@@ -277,15 +277,6 @@
                 </div>
             </section>
         </dialog>
-        <script>
-            const newTodoButton = document.getElementById('newTodoButton');
-            const dialog = document.querySelector('dialog');
-            newTodoButton.addEventListener('click', () => {
-                dialog.showModal();
-            });
-            function performClose() {
-                dialog.close();
-            }
-        </script>
+
     </body>
 </html>

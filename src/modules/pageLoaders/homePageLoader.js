@@ -16,7 +16,7 @@ import {
 import { ProjectManager } from '../entities/project.js';
 import { TodoFormHandler } from '../utility/todoFormHandler.js';
 
-
+import { dialogHandler} from '../utility/dialogHandler.js';
 
 /**
  * Loads and displays the home page content
@@ -31,6 +31,9 @@ export default function homePageLoader(content) {
 
     console.log('projectManager: ', projectManager.projects);
     console.log('todoFormHandler: ', todoFormHandler);
+
+    dialogHandler();
+
     // Select the main content area in the DOM
 
     // const homePageContent = content;
@@ -41,5 +44,7 @@ export default function homePageLoader(content) {
 
     // console.log(div);
     // homePageContent.appendChild(div);
+
+
 
 }

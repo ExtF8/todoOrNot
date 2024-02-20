@@ -833,9 +833,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        /* margin: 0 0.5rem 0 0.5rem; */
+        margin: 0 0.5rem 0 0.5rem;
         padding: .5rem 1rem;
-        /* text-align: center; */
         width: 40%;
         height: 4vh;
         border: 1px solid #b4b2c7;
@@ -852,7 +851,7 @@
         background-color: var(--priority-low-color);
     }
 
-    .low-selected {
+    #todo-form-container #priority input[type="radio"]:checked+label.low {
         background-color: var(--priority-low-color);
     }
 
@@ -864,7 +863,7 @@
         background-color: var(--priority-medium-color);
     }
 
-    .medium-selected {
+    #todo-form-container #priority input[type="radio"]:checked+label.medium {
         background-color: var(--priority-medium-color);
     }
 
@@ -876,18 +875,13 @@
         background-color: var(--priority-high-color);
     }
 
-    .high-selected {
+    #todo-form-container #priority input[type="radio"]:checked+label.high {
         background-color: var(--priority-high-color);
     }
 
-
+    /* Hide the radio buttons */
     #todo-form-container input[type="radio"] {
-        position: relative;
-        height: 1px;
-        width: 1px;
-        padding: 0;
-        margin: 0;
-        opacity: 0;
+        display: none;
     }
 
     #todo-form-container .cs-header {

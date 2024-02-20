@@ -766,19 +766,10 @@
         border-radius: 0.5rem;
         transition: border 0.3s;
     }
-
-
-    /* Hide the picker indicator */
-    input::-webkit-calendar-picker-indicator {
-        /* display: none
-         */
-        padding-left: 1.25rem;
-        /* height: 4rem; */
-
+    #dueDate{
+        padding-right: 0.4rem;
 
     }
-
-
 
     #todo-form-container .cs-input:hover,
     #todo-form-container .cs-textarea:hover {

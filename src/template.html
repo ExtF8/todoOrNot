@@ -153,9 +153,7 @@
                     </button>
                 </div>
             </header>
-            <section id="content">
-    
-            </section>
+            <section id="content"></section>
         </div>
         <dialog id="dialog">
             <section id="todo-form-container">
@@ -230,6 +228,7 @@
                             Priority
                             <div id="priority" class="priority-container">
                                 <input
+                                    name="priority"
                                     type="radio"
                                     value="low"
                                     id="priority-low"
@@ -243,6 +242,7 @@
                                 </label>
 
                                 <input
+                                    name="priority"
                                     type="radio"
                                     value="medium"
                                     id="priority-medium"
@@ -256,6 +256,7 @@
                                 </label>
 
                                 <input
+                                    name="priority"
                                     type="radio"
                                     value="high"
                                     id="priority-high"
@@ -268,15 +269,7 @@
                                 </label>
                             </div>
                         </div>
-                        <!-- <label class="cs-label label-note">
-                            Note
-                            <textarea
-                                class="cs-input cs-textarea"
-                                name="note"
-                                id="note"
-                                placeholder="Write note..."
-                            ></textarea>
-                        </label> -->
+
                         <button class="cs-button-solid cs-submit" type="submit">
                             Add
                         </button>

@@ -766,10 +766,7 @@
         border-radius: 0.5rem;
         transition: border 0.3s;
     }
-    #dueDate{
-        padding-right: 0.4rem;
 
-    }
 
     #todo-form-container .cs-input:hover,
     #todo-form-container .cs-textarea:hover {
@@ -958,6 +955,11 @@
         width: 100%;
     }
 
+
+
+    .flatpickr-wrapper {
+        width: 100%;
+    }
 }
 
 .test {

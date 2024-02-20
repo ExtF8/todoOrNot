@@ -16,35 +16,29 @@ import {
 import { ProjectManager } from '../entities/project.js';
 import { TodoFormHandler } from '../utility/todoFormHandler.js';
 
-import { dialogHandler} from '../utility/dialogHandler.js';
+import { dialogHandler } from '../utility/dialogHandler.js';
 
 /**
  * Loads and displays the home page content
  * @param {HTMLElement} content - The parent element where the home page will be rendered
  */
 export default function homePageLoader(content) {
-    clearPage(content);
+    document.addEventListener('DOMContentLoaded', async function () {
+        clearPage(content);
 
-    // Instantiate TodoFormHandler and ProjectManager
-    const projectManager = new ProjectManager();
-    const todoFormHandler = new TodoFormHandler();
+        // Instantiate TodoFormHandler and ProjectManager
+        const projectManager = new ProjectManager();
 
-    console.log('projectManager: ', projectManager.projects);
-    console.log('todoFormHandler: ', todoFormHandler);
+        console.log('projectManager: ', projectManager.projects);
 
-    dialogHandler();
-
-    // Select the main content area in the DOM
-
-    // const homePageContent = content;
-    // console.log('homePageContent: ', homePageContent);
-
-    // // Create and append the main section and content div
-    // const div = createDiv('class', 'test');
-
-    // console.log(div);
-    // homePageContent.appendChild(div);
-
-
-
+        // Instantiate TodoFormHandler after dialog is shown
+        try {
+            // Wait for the dialog handler to finish and then instantiate TodoFormHandler
+            await dialogHandler();
+            const todoFormHandler = new TodoFormHandler();
+            console.log('todoFormHandler: ', todoFormHandler);
+        } catch (error) {
+            console.error('Error instantiating dialog', error);
+        }
+    });
 }

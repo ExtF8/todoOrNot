@@ -26,11 +26,6 @@ export default function homePageLoader(content) {
     document.addEventListener('DOMContentLoaded', async function () {
         clearPage(content);
 
-        // Instantiate TodoFormHandler and ProjectManager
-        const projectManager = new ProjectManager();
-
-        console.log('projectManager: ', projectManager.projects);
-
         // Instantiate TodoFormHandler after dialog is shown
         try {
             // Wait for the dialog handler to finish and then instantiate TodoFormHandler

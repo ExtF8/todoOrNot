@@ -31,10 +31,9 @@ export class TodoFormHandler {
             priority
         );
 
-
         projectManager.addTodoToProject(newTodo);
 
-        console.log(projectManager.projects);
+        console.log('projectManager.projects: ', projectManager.projects);
 
         this.clearForm();
 

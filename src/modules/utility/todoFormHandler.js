@@ -1,11 +1,14 @@
-import { ProjectManager } from '../entities/project.js';
+
+import { projectManager } from '../pageLoaders/homePageLoader.js';
 import { Todo } from '../entities/todoItems.js';
 
-const projectManager = new ProjectManager();
 
 export class TodoFormHandler {
-    constructor() {
-        this.formElement = document.getElementById('todo-form');
+    constructor(document) {
+        this.document = document;
+        this.projectManager = projectManager;
+
+        this.formElement = this.document.getElementById('todo-form');
         this.formElement.addEventListener(
             'submit',
             this.handleSubmit.bind(this)
@@ -15,11 +18,11 @@ export class TodoFormHandler {
     handleSubmit(event) {
         event.preventDefault();
 
-        const title = document.getElementById('title').value;
-        const project = document.getElementById('project').value;
-        const description = document.getElementById('description').value;
-        const dueDate = document.getElementById('dueDate').value;
-        const priority = document.querySelector(
+        const title = this.document.getElementById('title').value;
+        const project = this.document.getElementById('project').value;
+        const description = this.document.getElementById('description').value;
+        const dueDate = this.document.getElementById('dueDate').value;
+        const priority = this.document.querySelector(
             'input[name="priority"]:checked'
         ).value;
 
@@ -31,27 +34,34 @@ export class TodoFormHandler {
             priority
         );
 
-        projectManager.addTodoToProject(newTodo);
+        this.projectManager.addTodoToProject(newTodo);
 
-        console.log('projectManager.projects: ', projectManager.projects);
+        // Accessing and logging the projects and todos
+        console.log('All projects:', projectManager.projects);
 
+        projectManager.projects.forEach((project) => {
+            console.log(`Project: ${project.name}`);
+            console.log('Todos:', project.todos);
+        });
+
+        console.log('Form submitted');
         this.clearForm();
 
         this.closeDialog();
     }
 
     closeDialog() {
-        const dialog = document.getElementById('dialog');
+        const dialog = this.document.getElementById('dialog');
         dialog.close();
     }
 
     clearForm() {
-        document.getElementById('title').value = '';
-        document.getElementById('project').value = '';
-        document.getElementById('description').value = '';
-        document.getElementById('dueDate').value = '';
+        this.document.getElementById('title').value = '';
+        this.document.getElementById('project').value = '';
+        this.document.getElementById('description').value = '';
+        this.document.getElementById('dueDate').value = '';
 
-        const priorityRadios = document.querySelectorAll(
+        const priorityRadios = this.document.querySelectorAll(
             'input[name="priority"]:checked'
         );
         priorityRadios.forEach((radio) => {

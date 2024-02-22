@@ -21,8 +21,8 @@ export class ProjectManager {
             project.todos.push(todo);
         } else {
             project = new Project(id, todo.project);
-            project.todos.push(todo);
             this.projects.push(project);
+            project.todos.push(todo);
         }
     }
 

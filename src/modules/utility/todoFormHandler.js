@@ -1,7 +1,5 @@
-
 import { projectManager } from '../pageLoaders/homePageLoader.js';
 import { Todo } from '../entities/todoItems.js';
-
 
 export class TodoFormHandler {
     constructor(document) {
@@ -18,6 +16,7 @@ export class TodoFormHandler {
     handleSubmit(event) {
         event.preventDefault();
 
+        const todoId = Date.now();
         const title = this.document.getElementById('title').value;
         const project = this.document.getElementById('project').value;
         const description = this.document.getElementById('description').value;
@@ -27,6 +26,7 @@ export class TodoFormHandler {
         ).value;
 
         const newTodo = new Todo(
+            todoId,
             title,
             project,
             description,
@@ -41,7 +41,9 @@ export class TodoFormHandler {
 
         projectManager.projects.forEach((project) => {
             console.log(`Project: ${project.name}`);
+            console.log('Project ID: ', project.id)
             console.log('Todos:', project.todos);
+            console.log('Todo ID: ', newTodo.id);
         });
 
         console.log('Form submitted');

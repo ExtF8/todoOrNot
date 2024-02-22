@@ -19,6 +19,11 @@ import { TodoFormHandler } from '../utility/todoFormHandler.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 
 const projectManager = new ProjectManager();
+
+const todoFormInit = () => {
+    const todoFormHandler = new TodoFormHandler(document, projectManager);
+    return todoFormHandler;
+};
 /**
  * Loads and displays the home page content
  * @param {HTMLElement} content - The parent element where the home page will be rendered
@@ -31,14 +36,10 @@ export default function homePageLoader(content) {
         try {
             // Instantiate TodoFormHandler after dialog is shown
             await dialogHandler();
-            const todoFormHandler = new TodoFormHandler(
-                document,
-                projectManager
-            );
+            todoFormInit();
         } catch (error) {
             console.error('Error instantiating dialog', error);
         }
-
     });
 }
 

@@ -16,6 +16,8 @@ export class TodoFormHandler {
     handleSubmit(event) {
         event.preventDefault();
 
+        // TODO: refactor to smaller modules
+
         const todoId = Date.now();
         const title = this.document.getElementById('title').value;
         const project = this.document.getElementById('project').value;
@@ -36,6 +38,7 @@ export class TodoFormHandler {
 
         this.projectManager.addTodoToProject(newTodo);
 
+        // TODO: call method to save to local storage
         // Accessing and logging the projects and todos
         console.log('All projects:', projectManager.projects);
 
@@ -51,6 +54,8 @@ export class TodoFormHandler {
 
         this.closeDialog();
     }
+
+    // TODO: Add method to save form data to local storage
 
     closeDialog() {
         const dialog = this.document.getElementById('dialog');

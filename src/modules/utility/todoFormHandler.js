@@ -16,26 +16,8 @@ export class TodoFormHandler {
     handleSubmit(event) {
         event.preventDefault();
 
-        // TODO: refactor to smaller modules
-
-        const todoId = Date.now();
-        const title = this.document.getElementById('title').value;
-        const project = this.document.getElementById('project').value;
-        const description = this.document.getElementById('description').value;
-        const dueDate = this.document.getElementById('dueDate').value;
-        const priority = this.document.querySelector(
-            'input[name="priority"]:checked'
-        ).value;
-
-        const newTodo = new Todo(
-            todoId,
-            title,
-            project,
-            description,
-            dueDate,
-            priority
-        );
-
+        const formData = this.extractFormData();
+        const newTodo = this.createTodoFromFormData(formData);
         this.projectManager.addTodoToProject(newTodo);
 
         // TODO: call method to save to local storage
@@ -44,15 +26,39 @@ export class TodoFormHandler {
 
         projectManager.projects.forEach((project) => {
             console.log(`Project: ${project.name}`);
-            console.log('Project ID: ', project.id)
+            console.log('Project ID: ', project.id);
             console.log('Todos:', project.todos);
             console.log('Todo ID: ', newTodo.id);
         });
 
         console.log('Form submitted');
         this.clearForm();
-
         this.closeDialog();
+    }
+
+    extractFormData() {
+        const id = Date.now();
+        return {
+            id: id,
+            title: this.document.getElementById('title').value,
+            project: this.document.getElementById('project').value,
+            description: this.document.getElementById('description').value,
+            dueDate: this.document.getElementById('dueDate').value,
+            priority: this.document.querySelector(
+                'input[name="priority"]:checked'
+            ).value,
+        };
+    }
+
+    createTodoFromFormData(formData) {
+        return new Todo(
+            formData.id,
+            formData.title,
+            formData.project,
+            formData.description,
+            formData.dueDate,
+            formData.priority
+        );
     }
 
     // TODO: Add method to save form data to local storage

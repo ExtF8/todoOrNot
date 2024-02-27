@@ -111,9 +111,10 @@ function renderTodosList(projects) {
  * @returns {HTMLLIElement} - The list item element representing a todo
  */
 export function renderTodoItem(todo) {
+    const priorityClass = getPriorityClass(todo.priority);
     const listItem = createListItem(
         'class',
-        'todo-container',
+        `todo-container ${priorityClass}`,
         todo,
         renderTodoContent
     );
@@ -133,7 +134,7 @@ function renderTodoContent(todo) {
 
     const todoDueDate = createParagraph('class', 'todo-dueDate', todo.dueDate);
     const editTodo = createDiv('class', 'todo-item');
-    editTodo.textContent = 'Edit';
+    editTodo.textContent = 'Details';
 
     const deleteTodo = createDiv('class', 'todo-item');
     deleteTodo.textContent = 'DEL';
@@ -145,6 +146,24 @@ function renderTodoContent(todo) {
     container.appendChild(deleteTodo);
 
     return container;
+}
+
+/**
+ * Determines the CSS class name for visual representation of todo item priority
+ * @param {String} priority - The priority value of the todo item
+ * @returns - The CSS class name corresponding to the priority
+ */
+function getPriorityClass(priority) {
+    switch (priority) {
+        case 'low':
+            return 'priority-low';
+        case 'medium':
+            return 'priority-medium';
+        case 'high':
+            return 'priority-high';
+        default:
+            return ''; // Default class if priority is not specified
+    }
 }
 
 function handleStorageError(error) {

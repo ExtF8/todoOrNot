@@ -1052,3 +1052,17 @@
     grid-column-end: 9;
     justify-content: center;
 }
+
+.priority-low {
+    border-left: 2px solid var(--priority-low-color);
+}
+
+
+.priority-medium {
+    border-left: 2px solid var(--priority-medium-color);
+}
+
+
+.priority-high {
+    border-left: 2px solid var(--priority-high-color);
+}

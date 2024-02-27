@@ -1,43 +1,40 @@
-// Importing utility functions from the 'elementRender' module. These functions are used
-// for creating various HTML elements dynamically
 import {
-    createSection,
     createDiv,
-    createPicture,
+    createTitle,
     createList,
     createListItem,
-    createSpan,
-    createTopper,
-    createTitle,
     createParagraph,
     clearPage,
 } from '../utility/elementRender.js';
 
 import { ProjectManager } from '../entities/project.js';
 import { TodoFormHandler } from '../utility/todoFormHandler.js';
-
 import { dialogHandler } from '../utility/dialogHandler.js';
-
-import { projectsData } from '../pageData/projectsDataMockUp.js';
+import { getDataFromLocalStorage } from '../utility/localStorageManager.js';
+import { sampleData } from '../pageData/sampleData.js';
 
 const projectManager = new ProjectManager();
-
-const todoFormInit = () => {
-    const todoFormHandler = new TodoFormHandler(document, projectManager);
-    return todoFormHandler;
-};
+const PROJECTS_STORAGE_KEY = 'projects';
 
 /**
  * Loads and displays the home page content
  * @param {HTMLElement} content - The parent element where the home page will be rendered
  */
+
 export default function homePageLoader(content) {
     document.addEventListener('DOMContentLoaded', async function () {
         clearPage(content);
+        let existingData;
+
+        try {
+            existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+        } catch (error) {
+            handleStorageError(error);
+            existingData = sampleData.projects;
+        }
 
         const section = document.querySelector('#content');
-
-        const todoContainer = renderContainer();
+        const todoContainer = renderContainer(existingData);
         section.appendChild(todoContainer);
 
         // Wait for the dialog handler to finish and then instantiate TodoFormHandler
@@ -46,33 +43,56 @@ export default function homePageLoader(content) {
             await dialogHandler();
             todoFormInit();
         } catch (error) {
-            console.error('Error instantiating dialog', error);
+            handleDialogError(error);
         }
     });
 }
 
 /**
+ * Initializes the TodoFormHandler and returns an instance of it
+ * @returns {TodoFormHandler} - An instance of the TodoFormHandler class
+ */
+const todoFormInit = () => {
+    const todoFormHandler = new TodoFormHandler(document, projectManager);
+    return todoFormHandler;
+};
+
+/**
  * Renders the primary container for the home page
+ * @param {Object|Array} projectData - The data containing project(s) information
+ * If an object is provided, it should represent a single project.
+ * If an array is provided, it should contain multiple project objects
  * @returns {HTMLDivElement} - The container div element
  */
-function renderContainer() {
-    const container = createDiv('class', 'todo-home-container');
+function renderContainer(projectData) {
+    // Use projectsData if provided. otherwise fallback to sample data
+    const project = projectData || sampleData.projects;
 
+    const container = createDiv('class', 'todo-home-container');
     const title = createTitle('class', 'title', 'Todos');
     container.appendChild(title);
 
-    const todosList = renderTodosList(projectsData.projects);
-    container.appendChild(todosList);
+    // Render the list of todos
+    const todosList = renderTodosList(project);
+    if (todosList) {
+        container.appendChild(todosList);
+    } else {
+        console.error('Error rendering todo list: Data empty or null');
+    }
 
     return container;
 }
 
 /**
  * Renders a list of todos
- * @param {Array} projects - Array of project objects
+ * @param {Array} projects - Array of project objects, each containing todo items
  * @returns {HTMLUListElement} - The list element containing todos
  */
 function renderTodosList(projects) {
+    if (!projects || projects.length === 0) {
+        return null;
+    }
+
     const list = createList('class', 'todo-list');
 
     projects.forEach((project) => {
@@ -90,7 +110,7 @@ function renderTodosList(projects) {
  * @param {Object} todo - Todo object
  * @returns {HTMLLIElement} - The list item element representing a todo
  */
-function renderTodoItem(todo) {
+export function renderTodoItem(todo) {
     const listItem = createListItem(
         'class',
         'todo-container',
@@ -100,6 +120,11 @@ function renderTodoItem(todo) {
     return listItem;
 }
 
+/**
+ * Renders the content of a single todo item
+ * @param {Object} todo - The todo object containing information about todo content
+ * @returns - The container div element representing the content of the todo item
+ */
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
 
@@ -120,6 +145,14 @@ function renderTodoContent(todo) {
     container.appendChild(deleteTodo);
 
     return container;
+}
+
+function handleStorageError(error) {
+    console.error('Error retrieving data from local storage: ', error);
+}
+
+function handleDialogError(error) {
+    console.error('Error instantiating dialog', error);
 }
 
 export { projectManager };

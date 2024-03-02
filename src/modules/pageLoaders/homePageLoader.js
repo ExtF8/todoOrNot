@@ -13,6 +13,8 @@ import { dialogHandler } from '../utility/dialogHandler.js';
 import { getDataFromLocalStorage } from '../utility/localStorageManager.js';
 import { sampleData } from '../pageData/sampleData.js';
 
+import { createDeleteIcon } from '../utility/elementRender.js';
+
 const projectManager = new ProjectManager();
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -129,21 +131,27 @@ export function renderTodoItem(todo) {
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
 
-    const checkbox = createDiv('class', 'todo-complete');
+    const checkbox = createDiv('class', 'todo-checkbox');
+
     const todoTitle = createTitle('class', 'todo-title', todo.title);
 
     const todoDueDate = createParagraph('class', 'todo-dueDate', todo.dueDate);
-    const editTodo = createDiv('class', 'todo-item');
-    editTodo.textContent = 'Details';
 
-    const deleteTodo = createDiv('class', 'todo-item');
-    deleteTodo.textContent = 'DEL';
+    const todoDetails = createDiv('class', 'todo-item');
+    todoDetails.classList.add('details');
+    todoDetails.textContent = 'Details';
+
+    const todoDelete = createDiv('class', 'todo-item');
+    todoDelete.classList.add('delete');
+    todoDelete.id = todo.id;
+    const deleteIcon = createDeleteIcon();
+    todoDelete.appendChild(deleteIcon);
 
     container.appendChild(checkbox);
     container.appendChild(todoTitle);
     container.appendChild(todoDueDate);
-    container.appendChild(editTodo);
-    container.appendChild(deleteTodo);
+    container.appendChild(todoDetails);
+    container.appendChild(todoDelete);
 
     return container;
 }

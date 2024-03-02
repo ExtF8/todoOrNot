@@ -70,7 +70,7 @@
     }
 
     #cs-navigation .page-title h1 {
-        font-size: 3em;
+        font-size: 1.2em;
     }
 
     #cs-navigation .cs-toggle {
@@ -274,7 +274,7 @@
         line-height: clamp(2.875em, 5.5vw, 3.5em);
         text-align: center;
         text-decoration: none;
-        min-width: 9.375rem;
+        min-width: 0.375rem;
         padding: 0 1.5rem;
         color: #fff;
         background-color: var(--primary);
@@ -556,7 +556,7 @@
     }
 
     #cs-navigation .page-title {
-        width: 18.4%;
+        width: 25%;
         max-width: 21.875rem;
         height: 4.0625rem;
         /* margin-right auto pushes everything away from it to the right */
@@ -626,7 +626,7 @@
         line-height: clamp(2.875em, 5.5vw, 3.5em);
         text-align: center;
         text-decoration: none;
-        min-width: 9.375rem;
+        min-width: 0.375rem;
         padding: 0 1.5rem;
         color: #fff;
         background-color: var(--primary);
@@ -976,7 +976,7 @@
 .todo-list {
     /* border: 1px solid green; */
     margin: 10px;
-    max-width: 50vw;
+    max-width: 90vw;
     /* height: 20px; */
     display: flex;
     flex-direction: column;
@@ -1011,14 +1011,11 @@
 }
 
 .todo-item {
-
-    display: flex;
     align-items: center;
-    justify-self: center;
-    /* width: fit-content; */
+    justify-content: center;
     height: 30px;
-    padding-inline: 0.3rem;
-    margin-inline: 0.7rem;
+    padding: 0.3rem;
+    margin: 0.5rem;
 }
 
 .todo-checkbox {
@@ -1078,8 +1075,8 @@
 }
 
 .delete {
-    width: 2rem;
-    height: 2rem;
+    width: 28px;
+    height: 28px;
     fill: gray;
     -webkit-transition: all .4s;
     transition: all .4s;

@@ -5,7 +5,7 @@ import {
     createListItem,
     createParagraph,
     clearPage,
-    createDeleteIcon
+    createDeleteIcon,
 } from '../utility/elementRender.js';
 
 import { ProjectManager } from '../entities/project.js';
@@ -143,6 +143,7 @@ function renderTodoContent(todo) {
     const todoDelete = createDiv('class', 'todo-item');
     todoDelete.classList.add('delete');
     todoDelete.id = todo.id;
+
     const deleteIcon = createDeleteIcon();
     todoDelete.appendChild(deleteIcon);
 

@@ -5,6 +5,7 @@ import {
     createListItem,
     createParagraph,
     clearPage,
+    createDeleteIcon
 } from '../utility/elementRender.js';
 
 import { ProjectManager } from '../entities/project.js';
@@ -12,8 +13,6 @@ import { TodoFormHandler } from '../utility/todoFormHandler.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 import { getDataFromLocalStorage } from '../utility/localStorageManager.js';
 import { sampleData } from '../pageData/sampleData.js';
-
-import { createDeleteIcon } from '../utility/elementRender.js';
 
 const projectManager = new ProjectManager();
 const PROJECTS_STORAGE_KEY = 'projects';

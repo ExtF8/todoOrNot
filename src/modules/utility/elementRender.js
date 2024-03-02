@@ -207,7 +207,7 @@ export function createLink(
 
 /**
  * Creates an element containing SVG code for a bin icon representing a delete action.
- * This function serves as workaround because SCG did not render in the DOM with the icon inside of it.
+ * This function serves as workaround because SVG did not render in the DOM with the icon inside of it.
  * All fill values are left empty so that they can be redefined from the parent element's CSS properties,
  * allowing for easier customization of the icon's color.
  * @returns {HTMLDivElement} - The created 'SVG' div element.

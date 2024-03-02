@@ -976,7 +976,7 @@
 .todo-list {
     /* border: 1px solid green; */
     margin: 10px;
-    width: 50vw;
+    max-width: 50vw;
     /* height: 20px; */
     display: flex;
     flex-direction: column;
@@ -991,6 +991,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    -webkit-transition: all .4s;
+    transition: all .4s;
+}
+
+.todo-container:hover {
+    transform: translateX(6px);
+    border-radius: 6px;
+
 }
 
 .todo-content {
@@ -1006,14 +1014,14 @@
 
     display: flex;
     align-items: center;
-    /* justify-self: end; */
-    width: fit-content;
+    justify-self: center;
+    /* width: fit-content; */
     height: 30px;
     padding-inline: 0.3rem;
-    margin-inline: 1rem;
+    margin-inline: 0.7rem;
 }
 
-.todo-complete {
+.todo-checkbox {
     display: grid;
     grid-column-start: 1;
     grid-column-end: 2;
@@ -1021,13 +1029,15 @@
     margin-inline: 1rem;
     height: 1.2rem;
     width: 1.2rem;
-    border-radius: 3px;
     border: 2px solid #3ba395;
+    cursor: pointer;
+
 }
 
 .todo-checked {
     grid-column-start: 1;
     grid-column-end: 2;
+    border-radius: 3px;
     height: 1.2rem;
     width: 1.2rem;
     display: block;
@@ -1053,16 +1063,44 @@
     justify-content: center;
 }
 
+.details {
+    padding: 5px;
+    border: 1px solid green;
+    -webkit-transition: all .4s;
+    transition: all .4s;
+}
+
+.details:hover {
+    /* border-width: 2px; */
+    border-radius: 4px;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.delete {
+    width: 2rem;
+    height: 2rem;
+    fill: gray;
+    -webkit-transition: all .4s;
+    transition: all .4s;
+}
+
+.delete:hover {
+    fill: var(--priority-high-color);
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 .priority-low {
-    border-left: 2px solid var(--priority-low-color);
+    border-left: 3px solid var(--priority-low-color);
 }
 
 
 .priority-medium {
-    border-left: 2px solid var(--priority-medium-color);
+    border-left: 3px solid var(--priority-medium-color);
 }
 
 
 .priority-high {
-    border-left: 2px solid var(--priority-high-color);
+    border-left: 3px solid var(--priority-high-color);
 }

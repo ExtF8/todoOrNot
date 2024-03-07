@@ -4,9 +4,9 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'production',
+    mode: 'development',
     entry: './src/index.js',
-    devtool: 'inline-source-map',
+    devtool: 'source-map',
     devServer: {
         static: './dist',
     },
@@ -18,6 +18,12 @@ module.exports = {
             showErrors: true,
             inject: true,
             minify: 'auto',
+        }),
+        new HtmlWebpackPlugin({
+            title: 'Dialog Form Content',
+            template: './src/dialogFormContent.html',
+            filename: 'dialogFormContent.html', // Adjust the filename and path as needed
+            inject: false, // Don't inject any assets into this HTML file
         }),
         new FaviconsWebpackPlugin({
             logo: './src/assets/img/favicons/favicon.png',

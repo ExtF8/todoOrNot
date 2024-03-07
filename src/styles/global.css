@@ -110,10 +110,10 @@ button:hover {
 
 #content {
     /* position: relative; */
-    min-height: 100vh;
+    max-height: 100vh;
     margin-top: 100px;
     /* padding-bottom: 200px; */
-    border: 1px solid green;
+    /* border: 1px solid green; */
 }
 
 footer {

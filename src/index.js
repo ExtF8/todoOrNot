@@ -27,7 +27,8 @@ let content = document.getElementById('content');
 
 // Load the initial home page content
 homePageLoader(content);
-console.log('main container: ', content)
+
+
 
 /**
  * Set up click event listeners for tab navigation in the header

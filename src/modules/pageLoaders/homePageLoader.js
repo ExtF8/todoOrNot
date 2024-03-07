@@ -37,7 +37,7 @@ export default function homePageLoader(content) {
             handleStorageError(error);
             existingData = sampleData.projects;
         }
-        const button = document.getElementById('newTodoButton');
+
         const section = document.querySelector('#content');
         const todoContainer = renderContainer(existingData);
         section.appendChild(todoContainer);
@@ -46,7 +46,7 @@ export default function homePageLoader(content) {
         // Wait for the dialog handler to finish and then instantiate TodoFormHandler
         try {
             // Instantiate TodoFormHandler after dialog is shown
-            await dialogHandler(button);
+            await dialogHandler();
             todoFormInit();
         } catch (error) {
             handleDialogError(error);
@@ -137,13 +137,13 @@ function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
 
     const checkbox = createDiv('class', 'todo-checkbox');
+
     const todoTitle = createTitle('class', 'todo-title', todo.title);
 
     const todoDueDate = createParagraph('class', 'todo-dueDate', todo.dueDate);
 
     const todoDetails = createDiv('class', 'todo-item');
     todoDetails.classList.add('details');
-    // todoDetails.id = 'editButton';
     todoDetails.textContent = 'Details';
 
     const todoDelete = createDiv('class', 'todo-item');

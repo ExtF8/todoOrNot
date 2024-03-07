@@ -92,8 +92,10 @@ export class TodoFormHandler {
         };
     }
 
+    // convertTodo
     createTodoFromFormData(formData) {
-        const id = Date.now();
+        const random = Math.random().toFixed()
+        const id = Date.now() + random;
         return new Todo(
             id,
             formData.title,

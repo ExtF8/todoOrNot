@@ -15,10 +15,11 @@ export function saveDataToLocalStorage(key, data) {
 export function getDataFromLocalStorage(key) {
     try {
         const serializedData = localStorage.getItem(key);
-        if (serializedData === null) {
-            return null;
-        }
-        return JSON.parse(serializedData);
+        // if (serializedData === null) {
+        //     return null;
+        // }
+        const result = JSON.parse(serializedData);
+        return result;
     } catch (error) {
         console.error('Error retrieving data from local storage: ', error);
         return null;
@@ -35,6 +36,32 @@ export function removeDataFromStorage(key) {
         return false;
     }
 }
+
+export function removeTodoFromLocalStorage(existingData, todoIDToRemove) {
+    // Check if existingData is null or undefined
+    if (!existingData || !Array.isArray(existingData)) {
+        console.log(existingData);
+        console.error('Existing data is not in the expected format.');
+        return existingData;
+    }
+
+    for (const project of existingData) {
+        if (!project.todos || !Array.isArray(project.todos)) {
+            console.log('projects: ', existingData);
+            console.error(
+                'Project todos are not in the expected format.'
+            );
+            continue; // Skip to the next project
+        }
+
+        // Remove todo with the specified ID from the project's todos array
+        project.todos = project.todos.filter(
+            (todo) => todo.id !== todoIDToRemove
+        );
+    }
+
+    return existingData;
+};
 
 // Function to edit data in local storage
 export function editDataInLocalStorage(key, newData) {

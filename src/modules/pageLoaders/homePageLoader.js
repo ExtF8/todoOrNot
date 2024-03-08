@@ -17,6 +17,7 @@ import {
     saveDataToLocalStorage,
 } from '../utility/localStorageManager.js';
 import { sampleData } from '../pageData/sampleData.js';
+import { TodoManager } from '../entities/todoItems.js';
 
 const projectManager = new ProjectManager();
 const PROJECTS_STORAGE_KEY = 'projects';
@@ -71,7 +72,7 @@ const todoFormInit = () => {
  * If an array is provided, it should contain multiple project objects
  * @returns {HTMLDivElement} - The container div element
  */
-function renderContainer(projectData) {
+export function renderContainer(projectData) {
     // Use projectsData if provided. otherwise fallback to sample data
     const project = projectData || sampleData.projects;
 
@@ -150,41 +151,18 @@ function renderTodoContent(todo) {
     todoDelete.classList.add('delete');
     todoDelete.id = todo.id;
 
-    checkbox.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (checkbox.classList.contains('todo-checked')) {
-            checkbox.classList.remove('todo-checked');
-            todoTitle.style.textDecoration = '';
-            todoDueDate.style.textDecoration = '';
-        } else {
-            todoTitle.style.textDecoration = 'line-through';
-            todoDueDate.style.textDecoration = 'line-through';
-            checkbox.classList.add('todo-checked');
-        }
-    });
+    const todoManager = new TodoManager(
+        todo.id,
+        todo.title,
+        todo.project,
+        todo.description,
+        todo.dueDate,
+        todo.priority,
+        todo.completed
+    );
 
-
-    todoDelete.addEventListener('click', (event) => {
-        event.preventDefault();
-        const todoIDToRemove = todoDelete.id;
-
-        let existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
-
-        let removeData = removeTodoFromLocalStorage(
-            existingData,
-            todoIDToRemove
-        );
-
-        saveDataToLocalStorage(PROJECTS_STORAGE_KEY, removeData);
-
-        const projectName = todo.project;
-        projectManager.removeTodoFromProject(projectName, todoIDToRemove);
-
-        const section = document.querySelector('#content');
-        const todoContainer = renderContainer(existingData);
-        clearPage(section)
-        section.appendChild(todoContainer);
-    });
+    todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate);
+    todoManager.todoDeleteHandler(todoDelete, todo.id, todo.project);
 
     const deleteIcon = createDeleteIcon();
     todoDelete.appendChild(deleteIcon);

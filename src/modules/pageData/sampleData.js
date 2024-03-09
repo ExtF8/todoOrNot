@@ -5,7 +5,7 @@ export const sampleData = {
             name: 'Work',
             todos: [
                 {
-                    id: 1,
+                    id: 11,
                     title: 'Meeting with clients',
                     project: 'Work',
                     description: 'Discuss project requirements',
@@ -14,7 +14,7 @@ export const sampleData = {
                     completed: true,
                 },
                 {
-                    id: 2,
+                    id: 22,
                     title: 'Prepare presentation',
                     project: 'Work',
                     description: 'Create slides for the upcoming presentation',
@@ -29,7 +29,7 @@ export const sampleData = {
             name: 'Personal',
             todos: [
                 {
-                    id: 3,
+                    id: 33,
                     title: 'Go grocery shopping',
                     project: 'Personal',
                     description: 'Buy fruits, vegetables, and milk',
@@ -38,7 +38,7 @@ export const sampleData = {
                     completed: true,
                 },
                 {
-                    id: 4,
+                    id: 44,
                     title: 'Gym workout',
                     project: 'Personal',
                     description: 'Cardio and weight training session',
@@ -53,7 +53,7 @@ export const sampleData = {
             name: 'Home Improvement',
             todos: [
                 {
-                    id: 5,
+                    id: 55,
                     title: 'Paint living room walls',
                     project: 'Home Improvement',
                     description: 'Choose paint color and buy supplies',
@@ -62,7 +62,7 @@ export const sampleData = {
                     completed: true,
                 },
                 {
-                    id: 6,
+                    id: 66,
                     title: 'Fix leaking faucet',
                     project: 'Home Improvement',
                     description: 'Call plumber to fix the kitchen faucet',
@@ -77,7 +77,7 @@ export const sampleData = {
             name: 'Fitness Goals',
             todos: [
                 {
-                    id: 7,
+                    id: 77,
                     title: 'Run 5 miles',
                     project: 'Fitness Goals',
                     description: 'Run in the park early morning',
@@ -86,7 +86,7 @@ export const sampleData = {
                     completed: false,
                 },
                 {
-                    id: 8,
+                    id: 88,
                     title: 'Try new yoga class',
                     project: 'Fitness Goals',
                     description: 'Attend the evening yoga class at the gym',
@@ -101,7 +101,7 @@ export const sampleData = {
             name: 'Vacation Planning',
             todos: [
                 {
-                    id: 9,
+                    id: 99,
                     title: 'Book flight tickets',
                     project: 'Vacation Planning',
                     description: 'Search for best deals and book tickets',
@@ -110,7 +110,7 @@ export const sampleData = {
                     completed: false,
                 },
                 {
-                    id: 10,
+                    id: 1010,
                     title: 'Research accommodation options',
                     project: 'Vacation Planning',
                     description: 'Find suitable hotels or Airbnb',

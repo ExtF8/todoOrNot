@@ -34,8 +34,22 @@ export default function homePageLoader(content) {
 
         try {
             existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+            // Check if existingData is null or undefined
+            if (!existingData) {
+                // If no existingData exists in local storage, save sample data
+                saveDataToLocalStorage(
+                    PROJECTS_STORAGE_KEY,
+                    sampleData.projects
+                );
+                // Update existingData with sample data
+                existingData = sampleData.projects;
+            }
         } catch (error) {
+            // Handle the error (e.g., log it)
             handleStorageError(error);
+            // Save sample data to local storage
+            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
+            // Update existingData with sample data
             existingData = sampleData.projects;
         }
 
@@ -43,7 +57,6 @@ export default function homePageLoader(content) {
         const todoContainer = renderContainer(existingData);
         section.appendChild(todoContainer);
 
-        // dialogHandler(details);
         // Wait for the dialog handler to finish and then instantiate TodoFormHandler
         try {
             // Instantiate TodoFormHandler after dialog is shown
@@ -74,14 +87,13 @@ const todoFormInit = () => {
  */
 export function renderContainer(projectData) {
     // Use projectsData if provided. otherwise fallback to sample data
-    const project = projectData || sampleData.projects;
 
     const container = createDiv('class', 'todo-home-container');
     const title = createTitle('class', 'title', 'Todos');
     container.appendChild(title);
 
     // Render the list of todos
-    const todosList = renderTodosList(project);
+    const todosList = renderTodosList(projectData);
     if (todosList) {
         container.appendChild(todosList);
     } else {

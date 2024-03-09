@@ -41,16 +41,11 @@ export default function homePageLoader(content) {
                     PROJECTS_STORAGE_KEY,
                     sampleData.projects
                 );
-                // Update existingData with sample data
-                existingData = sampleData.projects;
             }
         } catch (error) {
-            // Handle the error (e.g., log it)
             handleStorageError(error);
-            // Save sample data to local storage
+            // Save sample data to local storage as as fallback
             saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
-            // Update existingData with sample data
-            existingData = sampleData.projects;
         }
 
         const section = document.querySelector('#content');

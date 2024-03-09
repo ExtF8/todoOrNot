@@ -1,4 +1,7 @@
-import { projectManager, renderContainer } from '../pageLoaders/homePageLoader.js';
+import {
+    projectManager,
+    renderContainer,
+} from '../pageLoaders/homePageLoader.js';
 import { clearPage } from '../utility/elementRender.js';
 import {
     getDataFromLocalStorage,
@@ -39,18 +42,20 @@ export class TodoManager {
         this.todoCompleted = todoCompleted;
     }
 
-    checkboxHandler(checkbox, todoTitle, todoDueDate) {
-        checkbox.addEventListener('click', (event) => {
-            event.preventDefault();
-            if (checkbox.classList.contains('todo-checked')) {
-                checkbox.classList.remove('todo-checked');
-                todoTitle.style.textDecoration = '';
-                todoDueDate.style.textDecoration = '';
-            } else {
-                todoTitle.style.textDecoration = 'line-through';
-                todoDueDate.style.textDecoration = 'line-through';
-                checkbox.classList.add('todo-checked');
-            }
+    checkboxHandler(checkbox, todoTitle, todoDueDate, todoId) {
+        checkbox.addEventListener('click', () => {
+            // Toggle the 'todo-checked' class
+            checkbox.classList.toggle('todo-checked');
+
+            // Toggle line through todo title and due date
+            const isCompleted = checkbox.classList.contains('todo-checked');
+            todoTitle.style.textDecoration = isCompleted ? 'line-through' : '';
+            todoDueDate.style.textDecoration = isCompleted
+                ? 'line-through'
+                : '';
+
+            // Update todo completion status in local storage
+            this.updateTodoCompletion(todoId, isCompleted);
         });
     }
 
@@ -75,5 +80,32 @@ export class TodoManager {
             clearPage(section);
             section.appendChild(todoContainer);
         });
+    }
+
+    updateTodoCompletion(todoId, isCompleted) {
+        try {
+            const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+
+            if (existingData === null) {
+                console.error(
+                    'Cannot update todo completion status: No existing data found in local storage'
+                );
+                return;
+            }
+
+            const updatedData = existingData.map((project) => ({
+                ...project,
+                todos: project.todos.map((todo) => {
+                    if (todo.id === todoId) {
+                        return { ...todo, completed: isCompleted };
+                    }
+                    return todo;
+                }),
+            }));
+
+            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData)
+        } catch (error) {
+            console.error(error);
+        }
     }
 }

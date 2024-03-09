@@ -161,7 +161,7 @@ function renderTodoContent(todo) {
         todo.completed
     );
 
-    todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate);
+    todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate, todo.id);
     todoManager.todoDeleteHandler(todoDelete, todo.id, todo.project);
 
     const deleteIcon = createDeleteIcon();

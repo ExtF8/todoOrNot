@@ -45,7 +45,12 @@ export class TodoManager {
     checkboxHandler(checkbox, todoTitle, todoDueDate, todoId) {
         // Retrieve the completion status from local storage
         const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+
         const todo = this.findTodoById(existingData, todoId);
+        if (!todo) {
+            console.error('Todo with ID', todoId, 'not found.');
+            return;
+        }
         const isCompleted = todo.completed;
 
         // Set initial visual representation based on completion status

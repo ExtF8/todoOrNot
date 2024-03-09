@@ -43,7 +43,20 @@ export class TodoManager {
     }
 
     checkboxHandler(checkbox, todoTitle, todoDueDate, todoId) {
-        checkbox.addEventListener('click', () => {
+        // Retrieve the completion status from local storage
+        const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+        const todo = this.findTodoById(existingData, todoId);
+        const isCompleted = todo.completed;
+
+        // Set initial visual representation based on completion status
+        if (isCompleted) {
+            checkbox.classList.add('todo-checked');
+            todoTitle.style.textDecoration = 'line-through';
+            todoDueDate.style.textDecoration = 'line-through';
+        }
+
+        checkbox.addEventListener('click', (event) => {
+            event.preventDefault();
             // Toggle the 'todo-checked' class
             checkbox.classList.toggle('todo-checked');
 
@@ -103,9 +116,20 @@ export class TodoManager {
                 }),
             }));
 
-            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData)
+            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
         } catch (error) {
             console.error(error);
         }
+    }
+
+    findTodoById(existingData, todoId) {
+        for (const project of existingData) {
+            for (const todo of project.todos) {
+                if (todo.id === todoId) {
+                    return todo;
+                }
+            }
+        }
+        return null; // Return null if no todo with the specified ID is found
     }
 }

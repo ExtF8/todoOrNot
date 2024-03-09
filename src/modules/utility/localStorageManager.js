@@ -40,17 +40,13 @@ export function removeDataFromStorage(key) {
 export function removeTodoFromLocalStorage(existingData, todoIDToRemove) {
     // Check if existingData is null or undefined
     if (!existingData || !Array.isArray(existingData)) {
-        console.log(existingData);
         console.error('Existing data is not in the expected format.');
         return existingData;
     }
 
     for (const project of existingData) {
         if (!project.todos || !Array.isArray(project.todos)) {
-            console.log('projects: ', existingData);
-            console.error(
-                'Project todos are not in the expected format.'
-            );
+            console.error('Project todos are not in the expected format.');
             continue; // Skip to the next project
         }
 
@@ -61,7 +57,7 @@ export function removeTodoFromLocalStorage(existingData, todoIDToRemove) {
     }
 
     return existingData;
-};
+}
 
 // Function to edit data in local storage
 export function editDataInLocalStorage(key, newData) {
@@ -75,12 +71,18 @@ export function editDataInLocalStorage(key, newData) {
             );
             return false;
         }
-
-        // Merge existing data with new data
-        const updateData = { ...existingData, ...newData };
-
-        // Save updated data back to local storage
-        return saveDataToLocalStorage(key, updateData);
+        if (Array.isArray(newData)) {
+            // Merge arrays if newData is an array
+            const updateData = [...existingData, ...newData];
+            return saveDataToLocalStorage(key, updateData);
+        } else if (typeof newData === 'object') {
+            // Merge objects if newData is an object
+            const updateData = { ...existingData, ...newData };
+            return saveDataToLocalStorage(key, updateData);
+        } else {
+            console.error('Invalid data type. Expected an array or an object.');
+            return;
+        }
     } catch (error) {
         console.error('Error editing data in local storage: ', error);
         return false;

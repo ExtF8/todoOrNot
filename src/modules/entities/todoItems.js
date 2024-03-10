@@ -2,12 +2,14 @@ import {
     projectManager,
     renderContainer,
 } from '../pageLoaders/homePageLoader.js';
+import { dialogHandler } from '../utility/dialogHandler.js';
 import { clearPage } from '../utility/elementRender.js';
 import {
     getDataFromLocalStorage,
     removeTodoFromLocalStorage,
     saveDataToLocalStorage,
 } from '../utility/localStorageManager.js';
+import { TodoFormHandler } from '../utility/todoFormHandler.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -125,6 +127,40 @@ export class TodoManager {
         } catch (error) {
             console.error(error);
         }
+    }
+
+    todoDetailsHandler(
+        todoDetails,
+        todoDetailsId,
+        todoId,
+        todoTitle,
+        todoProject,
+        todoDescription,
+        todoDueDate,
+        todoPriority,
+        todoCompleted
+    ) {
+        const formData = {
+            todoId,
+            todoTitle,
+            todoProject,
+            todoDescription,
+            todoDueDate,
+            todoPriority,
+            todoCompleted,
+        };
+        todoDetails.addEventListener('click', async () => {
+            try {
+                await dialogHandler(todoDetails, todoDetailsId); // Pass details element and its id
+                const todoFormHandler = new TodoFormHandler(
+                    document,
+                    projectManager
+                );
+                todoFormHandler.populateTodoForm(formData);
+            } catch (error) {
+                console.error('Error handling details click: ', error);
+            }
+        });
     }
 
     findTodoById(existingData, todoId) {

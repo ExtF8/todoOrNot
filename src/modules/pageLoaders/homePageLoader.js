@@ -52,26 +52,14 @@ export default function homePageLoader(content) {
         const todoContainer = renderContainer(existingData);
         section.appendChild(todoContainer);
 
-        // Wait for the dialog handler to finish and then instantiate TodoFormHandler
         try {
-            // Instantiate TodoFormHandler after dialog is shown
-            await dialogHandler();
-            todoFormInit();
+            const newTodoButton = document.getElementById('newTodoButton');
+            await dialogHandler(newTodoButton);
         } catch (error) {
             handleDialogError(error);
         }
     });
 }
-
-/**
- * Initializes the TodoFormHandler and returns an instance of it.
- *
- * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
- */
-const todoFormInit = () => {
-    const todoFormHandler = new TodoFormHandler(document, projectManager);
-    return todoFormHandler;
-};
 
 /**
  * Renders the primary container for the home page
@@ -153,6 +141,8 @@ function renderTodoContent(todo) {
     const todoDetails = createDiv('class', 'todo-item');
     todoDetails.classList.add('details');
     todoDetails.textContent = 'Details';
+    todoDetails.id = todo.id + 'details';
+    const todoDetailsId = todoDetails.id
 
     const todoDelete = createDiv('class', 'todo-item');
     todoDelete.classList.add('delete');
@@ -170,6 +160,17 @@ function renderTodoContent(todo) {
 
     todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate, todo.id);
     todoManager.todoDeleteHandler(todoDelete, todo.id, todo.project);
+    todoManager.todoDetailsHandler(
+        todoDetails,
+        todoDetailsId,
+        todo.id,
+        todo.title,
+        todo.project,
+        todo.description,
+        todo.dueDate,
+        todo.priority,
+        todo.completed
+    );
 
     const deleteIcon = createDeleteIcon();
     todoDelete.appendChild(deleteIcon);

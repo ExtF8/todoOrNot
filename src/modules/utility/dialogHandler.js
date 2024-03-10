@@ -7,15 +7,14 @@ async function createDialog(content) {
     dialog.innerHTML = content;
 
     document.body.appendChild(dialog);
+
     return dialog;
 }
 
 export async function dialogHandler(button, detailsId) {
-
     try {
         const newTodoButton = document.getElementById('newTodoButton');
         const detailsButton = document.getElementById(detailsId);
-
 
         const response = await fetch('dialogFormContent.html');
         if (!response.ok) {
@@ -25,12 +24,14 @@ export async function dialogHandler(button, detailsId) {
 
         if (button === newTodoButton) {
             const dialog = await createDialog(html);
+            let formButton = document.getElementById('form-button');
             button.addEventListener('click', () => {
+                formButton.textContent = 'Add';
                 dialog.showModal();
                 datePickerHandler();
             });
         } else if (button === detailsButton) {
-            const formButton = document.getElementById('form-button');
+            let formButton = document.getElementById('form-button');
             formButton.textContent = 'Save';
 
             dialog.showModal();
@@ -43,7 +44,6 @@ export async function dialogHandler(button, detailsId) {
             const formElement = document.getElementById('todo-form');
             dialog.close();
             formElement.reset();
-
         });
     } catch (error) {
         console.error('Error in dialogHandler:', error);

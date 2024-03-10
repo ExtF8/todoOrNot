@@ -13,12 +13,12 @@ export function datePickerHandler() {
         theme: 'dark',
     });
 
-    // Add an event listener to the input field to format the date using date-fns when it changes
-    dueDateInput.addEventListener('change', (event) => {
-        const selectedDate = new Date(event.target.value);
-        console.log(selectedDate);
-        const formattedDate = format(selectedDate, 'P');
+    // // Add an event listener to the input field to format the date using date-fns when it changes
+    // dueDateInput.addEventListener('change', (event) => {
+    //     const selectedDate = new Date(event.target.value);
+    //     console.log(selectedDate);
+    //     const formattedDate = format(selectedDate, 'P');
 
-        fp.set('dateFormat', formattedDate);
-    });
+    //     fp.set('dateFormat', formattedDate);
+    // });
 }

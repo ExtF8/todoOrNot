@@ -20,11 +20,11 @@ export class TodoFormHandler {
     }
 
     async handleSubmit(event) {
+
         event.preventDefault();
         try {
             const formData = this.extractFormData();
             const newTodo = this.createTodoFromFormData(formData);
-
             // Retrieve existing data from local storage
             let existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
             if (!existingData) {
@@ -41,7 +41,6 @@ export class TodoFormHandler {
             await saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
 
             this.addNewTodoToList(newTodo);
-
             this.clearForm();
             this.closeDialog();
         } catch (error) {
@@ -94,7 +93,7 @@ export class TodoFormHandler {
 
     // convertTodo
     createTodoFromFormData(formData) {
-        const random = Math.random().toFixed()
+        const random = Math.random().toFixed();
         const id = Date.now() + random;
         return new Todo(
             id,
@@ -104,6 +103,15 @@ export class TodoFormHandler {
             formData.dueDate,
             formData.priority
         );
+    }
+
+    populateTodoForm(formData) {
+        const todoForm = this.formElement;
+        todoForm.elements['title'].value = formData.todoTitle;
+        todoForm.elements['project'].value = formData.todoProject;
+        todoForm.elements['description'].value = formData.todoDescription;
+        todoForm.elements['dueDate'].value = formData.todoDueDate;
+        todoForm.elements['priority'].value = formData.todoPriority;
     }
 
     closeDialog() {

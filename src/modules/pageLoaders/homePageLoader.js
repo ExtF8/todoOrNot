@@ -70,13 +70,14 @@ export default function homePageLoader(content) {
  */
 export function renderContainer(projectData) {
     // Use projectsData if provided. otherwise fallback to sample data
+    const project = projectData || sampleData.projects
 
     const container = createDiv('class', 'todo-home-container');
     const title = createTitle('class', 'title', 'Todos');
     container.appendChild(title);
 
     // Render the list of todos
-    const todosList = renderTodosList(projectData);
+    const todosList = renderTodosList(project);
     if (todosList) {
         container.appendChild(todosList);
     } else {

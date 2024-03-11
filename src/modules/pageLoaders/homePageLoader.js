@@ -55,11 +55,21 @@ export default function homePageLoader(content) {
         try {
             const newTodoButton = document.getElementById('newTodoButton');
             await dialogHandler(newTodoButton);
+            todoFormInit()
         } catch (error) {
             handleDialogError(error);
         }
     });
 }
+/**
+ * Initializes the TodoFormHandler and returns an instance of it.
+ *
+ * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
+ */
+const todoFormInit = () => {
+    const todoFormHandler = new TodoFormHandler(document, projectManager);
+    return todoFormHandler;
+};
 
 /**
  * Renders the primary container for the home page

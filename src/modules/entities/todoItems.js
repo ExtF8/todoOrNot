@@ -9,7 +9,6 @@ import {
     removeTodoFromLocalStorage,
     saveDataToLocalStorage,
 } from '../utility/localStorageManager.js';
-import { TodoFormHandler } from '../utility/todoFormHandler.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -132,34 +131,26 @@ export class TodoManager {
     todoDetailsHandler(
         todoDetails,
         todoDetailsId,
-        todoId,
-        todoTitle,
-        todoProject,
-        todoDescription,
-        todoDueDate,
-        todoPriority,
-        todoCompleted
+        id,
+        title,
+        project,
+        description,
+        dueDate,
+        priority,
+        completed
     ) {
-        const formData = {
-            todoId,
-            todoTitle,
-            todoProject,
-            todoDescription,
-            todoDueDate,
-            todoPriority,
-            todoCompleted,
+        const todoData = {
+            id,
+            title,
+            project,
+            description,
+            dueDate,
+            priority,
+            completed,
         };
-        todoDetails.addEventListener('click', async () => {
-            try {
-                await dialogHandler(todoDetails, todoDetailsId); // Pass details element and its id
-                const todoFormHandler = new TodoFormHandler(
-                    document,
-                    projectManager
-                );
-                todoFormHandler.populateTodoForm(formData);
-            } catch (error) {
-                console.error('Error handling details click: ', error);
-            }
+        todoDetails.addEventListener('click', async (event) => {
+            event.preventDefault();
+            await dialogHandler(todoDetails, todoDetailsId, todoData); // Pass details element and its id
         });
     }
 

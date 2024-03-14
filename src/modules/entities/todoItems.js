@@ -128,29 +128,29 @@ export class TodoManager {
         }
     }
 
-    todoDetailsHandler(
-        todoDetails,
-        todoDetailsId,
-        id,
-        title,
-        project,
-        description,
-        dueDate,
-        priority,
-        completed
-    ) {
-        const todoData = {
-            id,
-            title,
-            project,
-            description,
-            dueDate,
-            priority,
-            completed,
-        };
+    todoDetailsHandler(todoDetails, todoDetailsId, id) {
         todoDetails.addEventListener('click', async (event) => {
             event.preventDefault();
-            await dialogHandler(todoDetails, todoDetailsId, todoData); // Pass details element and its id
+            try {
+                // Retrieve todo data from local storage based on todo ID
+                const existingData =
+                    getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+                const todoData = this.findTodoById(existingData, id);
+
+                if (!todoData) {
+                    console.error(
+                        'Todo with id: ',
+                        id,
+                        'not found in local storage'
+                    );
+                    return;
+                }
+
+                console.log('todoData.priority: ', todoData.priority);
+                await dialogHandler(todoDetails, todoDetailsId, todoData); // Pass details element and its id
+            } catch (error) {
+                console.log('Error handling details click: ', error);
+            }
         });
     }
 

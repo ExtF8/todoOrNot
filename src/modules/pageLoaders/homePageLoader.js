@@ -187,7 +187,7 @@ export function getPriorityClass(priority) {
         case 'high':
             return 'priority-high';
         default:
-            return ''; // Default class if priority is not specified
+            return 'priority-low'; // Default class if priority is not specified
     }
 }
 

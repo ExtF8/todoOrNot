@@ -146,10 +146,9 @@ export class TodoManager {
                     return;
                 }
 
-                console.log('todoData.priority: ', todoData.priority);
                 await dialogHandler(todoDetails, todoDetailsId, todoData); // Pass details element and its id
             } catch (error) {
-                console.log('Error handling details click: ', error);
+                console.error('Error handling details click: ', error);
             }
         });
     }

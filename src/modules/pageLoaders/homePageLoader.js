@@ -9,11 +9,9 @@ import {
 } from '../utility/elementRender.js';
 
 import { ProjectManager } from '../entities/project.js';
-import { TodoFormHandler } from '../utility/todoFormHandler.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 import {
     getDataFromLocalStorage,
-    removeTodoFromLocalStorage,
     saveDataToLocalStorage,
 } from '../utility/localStorageManager.js';
 import { sampleData } from '../pageData/sampleData.js';
@@ -62,15 +60,6 @@ export default function homePageLoader(content) {
         }
     });
 }
-// /**
-//  * Initializes the TodoFormHandler and returns an instance of it.
-//  *
-//  * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
-//  */
-// const todoFormInit = () => {
-//     const todoFormHandler = new TodoFormHandler(document, projectManager);
-//     return todoFormHandler;
-// };
 
 /**
  * Renders the primary container for the home page
@@ -144,21 +133,17 @@ export function renderTodoItem(todo) {
  */
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
-
-
     const checkbox = createDiv('class', 'todo-checkbox');
-
     const todoTitle = createTitle('class', 'todo-title', todo.title);
-
     const todoDueDate = createParagraph('class', 'todo-dueDate', todo.dueDate);
-
     const todoDetails = createDiv('class', 'todo-item');
+    const todoDelete = createDiv('class', 'todo-item');
+
     todoDetails.classList.add('details');
     todoDetails.textContent = 'Details';
     todoDetails.id = todo.id + 'details';
     const todoDetailsId = todoDetails.id;
 
-    const todoDelete = createDiv('class', 'todo-item');
     todoDelete.classList.add('delete');
     todoDelete.id = todo.id + 'delete';
 
@@ -174,17 +159,7 @@ function renderTodoContent(todo) {
 
     todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate, todo.id);
     todoManager.todoDeleteHandler(todoDelete, todo.id, todo.project);
-    todoManager.todoDetailsHandler(
-        todoDetails,
-        todoDetailsId,
-        todo.id,
-        todo.title,
-        todo.project,
-        todo.description,
-        todo.dueDate,
-        todo.priority,
-        todo.completed
-    );
+    todoManager.todoDetailsHandler(todoDetails, todoDetailsId, todo.id);
 
     const deleteIcon = createDeleteIcon();
     todoDelete.appendChild(deleteIcon);

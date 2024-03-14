@@ -9,45 +9,55 @@ import {
 } from '../utility/elementRender.js';
 
 import { ProjectManager } from '../entities/project.js';
-import { TodoFormHandler } from '../utility/todoFormHandler.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 import {
     getDataFromLocalStorage,
-    removeTodoFromLocalStorage,
     saveDataToLocalStorage,
 } from '../utility/localStorageManager.js';
 import { sampleData } from '../pageData/sampleData.js';
+import { TodoManager } from '../entities/todoItems.js';
 
+// Instantiate ProjectManager for managing projects
+// Manages projects and their associated todos
 const projectManager = new ProjectManager();
 const PROJECTS_STORAGE_KEY = 'projects';
 
 /**
- * Loads and displays the home page content
- * @param {HTMLElement} content - The parent element where the home page will be rendered
+ * Loads and displays the home page content.
+ *
+ * @param {HTMLElement} content - The parent element where the home page will be rendered.
  */
-
 export default function homePageLoader(content) {
     document.addEventListener('DOMContentLoaded', async function () {
         clearPage(content);
         let existingData;
 
         try {
+            // Try to retrieve existing data from local storage
             existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+            // Check if existingData is null or undefined
+            if (!existingData) {
+                // If no existingData exists in local storage, save sample data
+                saveDataToLocalStorage(
+                    PROJECTS_STORAGE_KEY,
+                    sampleData.projects
+                );
+            }
         } catch (error) {
             handleStorageError(error);
-            existingData = sampleData.projects;
+            // Save sample data to local storage as as fallback
+            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
         }
 
         const section = document.querySelector('#content');
         const todoContainer = renderContainer(existingData);
         section.appendChild(todoContainer);
 
-        // dialogHandler(details);
-        // Wait for the dialog handler to finish and then instantiate TodoFormHandler
         try {
-            // Instantiate TodoFormHandler after dialog is shown
-            await dialogHandler();
-            todoFormInit();
+            const newTodoButton = document.getElementById('newTodoButton');
+            newTodoButton.addEventListener('click', async () => {
+                await dialogHandler(newTodoButton, 'newTodoButton');
+            });
         } catch (error) {
             handleDialogError(error);
         }
@@ -55,24 +65,15 @@ export default function homePageLoader(content) {
 }
 
 /**
- * Initializes the TodoFormHandler and returns an instance of it.
+ * Renders the primary container for the home page.
  *
- * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
- */
-const todoFormInit = () => {
-    const todoFormHandler = new TodoFormHandler(document, projectManager);
-    return todoFormHandler;
-};
-
-/**
- * Renders the primary container for the home page
- * @param {Object|Array} projectData - The data containing project(s) information
+ * @param {Object|Array} projectData - The data containing project(s) information.
  * If an object is provided, it should represent a single project.
- * If an array is provided, it should contain multiple project objects
- * @returns {HTMLDivElement} - The container div element
+ * If an array is provided, it should contain multiple project objects.
+ * @returns {HTMLDivElement} - The container div element.
  */
-function renderContainer(projectData) {
-    // Use projectsData if provided. otherwise fallback to sample data
+export function renderContainer(projectData) {
+    // Use projectsData if provided, Otherwise fallback to sample data
     const project = projectData || sampleData.projects;
 
     const container = createDiv('class', 'todo-home-container');
@@ -91,9 +92,10 @@ function renderContainer(projectData) {
 }
 
 /**
- * Renders a list of todos
- * @param {Array} projects - Array of project objects, each containing todo items
- * @returns {HTMLUListElement} - The list element containing todos
+ * Renders a list of todos.
+ *
+ * @param {Array} projects - Array of project objects, each containing todo items.
+ * @returns {HTMLUListElement} - The list element containing todos.
  */
 function renderTodosList(projects) {
     if (!projects || projects.length === 0) {
@@ -113,9 +115,10 @@ function renderTodosList(projects) {
 }
 
 /**
- * Renders a single todo item
- * @param {Object} todo - Todo object
- * @returns {HTMLLIElement} - The list item element representing a todo
+ * Renders a single todo item.
+ *
+ * @param {Object} todo - Todo object.
+ * @returns {HTMLLIElement} - The list item element representing a todo.
  */
 export function renderTodoItem(todo) {
     const priorityClass = getPriorityClass(todo.priority);
@@ -125,66 +128,45 @@ export function renderTodoItem(todo) {
         todo,
         renderTodoContent
     );
+    listItem.id = `todo-${todo.id}`;
     return listItem;
 }
 
 /**
- * Renders the content of a single todo item
- * @param {Object} todo - The todo object containing information about todo content
- * @returns - The container div element representing the content of the todo item
+ * Renders the content of a single todo item.
+ *
+ * @param {Object} todo - The todo object containing information about todo content.
+ * @returns {HTMLDivElement} - The container div element representing the content of the todo item.
  */
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
-
     const checkbox = createDiv('class', 'todo-checkbox');
-
     const todoTitle = createTitle('class', 'todo-title', todo.title);
-
     const todoDueDate = createParagraph('class', 'todo-dueDate', todo.dueDate);
-
     const todoDetails = createDiv('class', 'todo-item');
+    const todoDelete = createDiv('class', 'todo-item');
+
     todoDetails.classList.add('details');
     todoDetails.textContent = 'Details';
+    todoDetails.id = todo.id + 'details';
+    const todoDetailsId = todoDetails.id;
 
-    const todoDelete = createDiv('class', 'todo-item');
     todoDelete.classList.add('delete');
-    todoDelete.id = todo.id;
+    todoDelete.id = todo.id + 'delete';
 
-    checkbox.addEventListener('click', (event) => {
-        event.preventDefault();
-        if (checkbox.classList.contains('todo-checked')) {
-            checkbox.classList.remove('todo-checked');
-            todoTitle.style.textDecoration = '';
-            todoDueDate.style.textDecoration = '';
-        } else {
-            todoTitle.style.textDecoration = 'line-through';
-            todoDueDate.style.textDecoration = 'line-through';
-            checkbox.classList.add('todo-checked');
-        }
-    });
+    const todoManager = new TodoManager(
+        todo.id,
+        todo.title,
+        todo.project,
+        todo.description,
+        todo.dueDate,
+        todo.priority,
+        todo.completed
+    );
 
-
-    todoDelete.addEventListener('click', (event) => {
-        event.preventDefault();
-        const todoIDToRemove = todoDelete.id;
-
-        let existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
-
-        let removeData = removeTodoFromLocalStorage(
-            existingData,
-            todoIDToRemove
-        );
-
-        saveDataToLocalStorage(PROJECTS_STORAGE_KEY, removeData);
-
-        const projectName = todo.project;
-        projectManager.removeTodoFromProject(projectName, todoIDToRemove);
-
-        const section = document.querySelector('#content');
-        const todoContainer = renderContainer(existingData);
-        clearPage(section)
-        section.appendChild(todoContainer);
-    });
+    todoManager.checkboxHandler(checkbox, todoTitle, todoDueDate, todo.id);
+    todoManager.todoDeleteHandler(todoDelete, todo.id, todo.project);
+    todoManager.todoDetailsHandler(todoDetails, todoDetailsId, todo.id);
 
     const deleteIcon = createDeleteIcon();
     todoDelete.appendChild(deleteIcon);
@@ -199,11 +181,12 @@ function renderTodoContent(todo) {
 }
 
 /**
- * Determines the CSS class name for visual representation of todo item priority
- * @param {String} priority - The priority value of the todo item
- * @returns - The CSS class name corresponding to the priority
+ * Determines the CSS class name for visual representation of todo item priority.
+ *
+ * @param {String} priority - The priority value of the todo item.
+ * @returns {String} - The CSS class name corresponding to the priority.
  */
-function getPriorityClass(priority) {
+export function getPriorityClass(priority) {
     switch (priority) {
         case 'low':
             return 'priority-low';
@@ -212,14 +195,24 @@ function getPriorityClass(priority) {
         case 'high':
             return 'priority-high';
         default:
-            return ''; // Default class if priority is not specified
+            return 'priority-low'; // Default class if priority is not specified
     }
 }
 
+/**
+ * Handles the error that occurs while retrieving data from local storage.
+ *
+ * @param {Error} error - The error object representing the storage error.
+ */
 function handleStorageError(error) {
     console.error('Error retrieving data from local storage: ', error);
 }
 
+/**
+ * Handles the error that occurs while instantiating dialog.
+ *
+ * @param {Error} error - The error object representing the dialog error.
+ */
 function handleDialogError(error) {
     console.error('Error instantiating dialog', error);
 }

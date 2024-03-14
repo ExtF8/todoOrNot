@@ -16,19 +16,10 @@ export class TodoFormHandler {
     constructor(document, projectManager) {
         this.document = document;
         this.projectManager = projectManager;
-
         this.formElement = this.document.getElementById('todo-form');
-
-        // this.formElement.addEventListener(
-        //     'submit',
-        //     this.handleSubmit.bind(this)
-        // );
-
-        // this.formElement.addEventListener('save', this.handleSave.bind(this));
     }
 
     async handleSubmit(event) {
-        console.log('handleSubmit started');
         event.preventDefault();
         try {
             const formData = this.extractFormData();
@@ -49,17 +40,11 @@ export class TodoFormHandler {
             await saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
 
             this.addNewTodoToList(newTodo);
-
-            // this.formElement.removeEventListener(
-            //     'submit',
-            //     this.handleSubmit.bind(this)
-            // );
             this.clearForm();
             this.closeDialog();
 
             const dialog = document.getElementById('dialog');
             removeDialog(dialog);
-            console.log('handleSubmit ended');
         } catch (error) {
             console.error('Error handling form submission: ', error);
         }
@@ -67,8 +52,6 @@ export class TodoFormHandler {
 
     async handleSave(event, todoData) {
         event.preventDefault();
-        console.log('handleSave started');
-
         try {
             // Extract the relevant data from the form
             const formData = this.extractFormData(todoData);
@@ -82,32 +65,15 @@ export class TodoFormHandler {
             );
 
             this.updatedTodoInList(updatedTodoData);
-
-            console.log('mock save to local: ', updatedTodoData);
-
             this.clearForm();
             this.closeDialog();
 
             const dialog = document.getElementById('dialog');
             removeDialog(dialog);
-
-            console.log('handleSave ended');
         } catch (error) {
             console.error('Error saving data: ', error);
         }
     }
-
-    // extractDataFromTodoData(todoData) {
-    //     return {
-    //         id: todoData.id,
-    //         title: todoData.title,
-    //         project: todoData.project,
-    //         description: todoData.description,
-    //         dueDate: todoData.dueDate,
-    //         priority: todoData.priority,
-    //         completed: todoData.completed, // Assuming completed state needs to be updated too
-    //     };
-    // }
 
     extractFormData(todoData = {}) {
         const formData = new FormData(this.formElement);
@@ -159,7 +125,6 @@ export class TodoFormHandler {
 
         // Find the existing todo item in the list by its ID
         const todoItem = todoList.querySelector(`#todo-${updatedTodo.id}`);
-        console.log(todoItem);
 
         if (todoItem) {
             todoItem.querySelector('.todo-title').textContent =

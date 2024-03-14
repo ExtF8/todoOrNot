@@ -17,20 +17,23 @@ import {
 import { sampleData } from '../pageData/sampleData.js';
 import { TodoManager } from '../entities/todoItems.js';
 
+// Instantiate ProjectManager for managing projects
+// Manages projects and their associated todos
 const projectManager = new ProjectManager();
 const PROJECTS_STORAGE_KEY = 'projects';
 
 /**
- * Loads and displays the home page content
- * @param {HTMLElement} content - The parent element where the home page will be rendered
+ * Loads and displays the home page content.
+ *
+ * @param {HTMLElement} content - The parent element where the home page will be rendered.
  */
-
 export default function homePageLoader(content) {
     document.addEventListener('DOMContentLoaded', async function () {
         clearPage(content);
         let existingData;
 
         try {
+            // Try to retrieve existing data from local storage
             existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
             // Check if existingData is null or undefined
             if (!existingData) {
@@ -62,14 +65,15 @@ export default function homePageLoader(content) {
 }
 
 /**
- * Renders the primary container for the home page
- * @param {Object|Array} projectData - The data containing project(s) information
+ * Renders the primary container for the home page.
+ *
+ * @param {Object|Array} projectData - The data containing project(s) information.
  * If an object is provided, it should represent a single project.
- * If an array is provided, it should contain multiple project objects
- * @returns {HTMLDivElement} - The container div element
+ * If an array is provided, it should contain multiple project objects.
+ * @returns {HTMLDivElement} - The container div element.
  */
 export function renderContainer(projectData) {
-    // Use projectsData if provided. otherwise fallback to sample data
+    // Use projectsData if provided, Otherwise fallback to sample data
     const project = projectData || sampleData.projects;
 
     const container = createDiv('class', 'todo-home-container');
@@ -88,9 +92,10 @@ export function renderContainer(projectData) {
 }
 
 /**
- * Renders a list of todos
- * @param {Array} projects - Array of project objects, each containing todo items
- * @returns {HTMLUListElement} - The list element containing todos
+ * Renders a list of todos.
+ *
+ * @param {Array} projects - Array of project objects, each containing todo items.
+ * @returns {HTMLUListElement} - The list element containing todos.
  */
 function renderTodosList(projects) {
     if (!projects || projects.length === 0) {
@@ -110,9 +115,10 @@ function renderTodosList(projects) {
 }
 
 /**
- * Renders a single todo item
- * @param {Object} todo - Todo object
- * @returns {HTMLLIElement} - The list item element representing a todo
+ * Renders a single todo item.
+ *
+ * @param {Object} todo - Todo object.
+ * @returns {HTMLLIElement} - The list item element representing a todo.
  */
 export function renderTodoItem(todo) {
     const priorityClass = getPriorityClass(todo.priority);
@@ -127,9 +133,10 @@ export function renderTodoItem(todo) {
 }
 
 /**
- * Renders the content of a single todo item
- * @param {Object} todo - The todo object containing information about todo content
- * @returns - The container div element representing the content of the todo item
+ * Renders the content of a single todo item.
+ *
+ * @param {Object} todo - The todo object containing information about todo content.
+ * @returns {HTMLDivElement} - The container div element representing the content of the todo item.
  */
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
@@ -174,9 +181,10 @@ function renderTodoContent(todo) {
 }
 
 /**
- * Determines the CSS class name for visual representation of todo item priority
- * @param {String} priority - The priority value of the todo item
- * @returns - The CSS class name corresponding to the priority
+ * Determines the CSS class name for visual representation of todo item priority.
+ *
+ * @param {String} priority - The priority value of the todo item.
+ * @returns {String} - The CSS class name corresponding to the priority.
  */
 export function getPriorityClass(priority) {
     switch (priority) {
@@ -191,10 +199,20 @@ export function getPriorityClass(priority) {
     }
 }
 
+/**
+ * Handles the error that occurs while retrieving data from local storage.
+ *
+ * @param {Error} error - The error object representing the storage error.
+ */
 function handleStorageError(error) {
     console.error('Error retrieving data from local storage: ', error);
 }
 
+/**
+ * Handles the error that occurs while instantiating dialog.
+ *
+ * @param {Error} error - The error object representing the dialog error.
+ */
 function handleDialogError(error) {
     console.error('Error instantiating dialog', error);
 }

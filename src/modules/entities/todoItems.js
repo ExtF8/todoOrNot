@@ -11,8 +11,23 @@ import {
 } from '../utility/localStorageManager.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
-
+/**
+ * Represents a Todo item.
+ *
+ * @class
+ */
 export class Todo {
+    /**
+     * Create a Todo item.
+     *
+     * @constructor
+     * @param {number} id - The ID of the Todo item.
+     * @param {string} title - The title of the Todo item.
+     * @param {string} project - The project of the Todo item.
+     * @param {string} description - The description of the Todo item.
+     * @param {string} dueDate - The due date of the Todo item.
+     * @param {string} priority - The priority of the Todo item.
+     */
     constructor(id, title, project, description, dueDate, priority) {
         this.id = id;
         this.title = title;
@@ -24,7 +39,24 @@ export class Todo {
     }
 }
 
+/**
+ * Represents a Todo Manager.
+ *
+ * @class
+ */
 export class TodoManager {
+    /**
+     * Create a Todo Manager.
+     *
+     * @constructor
+     * @param {number} todoId - The ID of the Todo item.
+     * @param {string} todoTitle - The title of the Todo item.
+     * @param {string} projectName - The project name of the Todo item.
+     * @param {string} todoDescription - The description of the Todo item.
+     * @param {string} todoDueDate - The due date of the Todo item.
+     * @param {string} todoPriority - The priority of the Todo item.
+     * @param {boolean} todoCompleted - The completion status of the Todo item.
+     */
     constructor(
         todoId,
         todoTitle,
@@ -43,6 +75,14 @@ export class TodoManager {
         this.todoCompleted = todoCompleted;
     }
 
+    /**
+     * Handles the checkbox click event for a Todo item.
+     *
+     * @param {HTMLElement} checkbox - The checkbox element.
+     * @param {HTMLElement} todoTitle - The title element of the Todo item.
+     * @param {HTMLElement} todoDueDate - The due date element of the Todo item.
+     * @param {number} todoId - The ID of the Todo item.
+     */
     checkboxHandler(checkbox, todoTitle, todoDueDate, todoId) {
         // Retrieve the completion status from local storage
         const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
@@ -78,6 +118,13 @@ export class TodoManager {
         });
     }
 
+    /**
+     * Handles the delete button click event for a Todo item.
+     *
+     * @param {HTMLElement} todoDelete - The delete button element.
+     * @param {number} todoId - The ID of the Todo item.
+     * @param {string} projectName - The project name of the Todo item.
+     */
     todoDeleteHandler(todoDelete, todoId, projectName) {
         todoDelete.addEventListener('click', (event) => {
             event.preventDefault();
@@ -101,6 +148,12 @@ export class TodoManager {
         });
     }
 
+    /**
+     * Updates the completion status of a Todo item.
+     *
+     * @param {number} todoId - The ID of the Todo item.
+     * @param {boolean} isCompleted - The completion status of the Todo item.
+     */
     updateTodoCompletion(todoId, isCompleted) {
         try {
             const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
@@ -128,6 +181,13 @@ export class TodoManager {
         }
     }
 
+    /**
+     * Handles the details button click event for a Todo item.
+     *
+     * @param {HTMLElement} todoDetails - The details button element.
+     * @param {HTMLElement} todoDetailsId - The details ID element.
+     * @param {number} id - The ID of the Todo item.
+     */
     todoDetailsHandler(todoDetails, todoDetailsId, id) {
         todoDetails.addEventListener('click', async (event) => {
             event.preventDefault();
@@ -153,6 +213,13 @@ export class TodoManager {
         });
     }
 
+    /**
+     * Finds a Todo item by its ID.
+     *
+     * @param {Array} existingData - The existing data from local storage.
+     * @param {number} todoId - The ID of the Todo item.
+     * @returns {object|null} - The Todo item if found, otherwise null.
+     */
     findTodoById(existingData, todoId) {
         for (const project of existingData) {
             for (const todo of project.todos) {

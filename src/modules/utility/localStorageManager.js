@@ -59,32 +59,39 @@ export function removeTodoFromLocalStorage(existingData, todoIDToRemove) {
     return existingData;
 }
 
-// Function to edit data in local storage
-export function editDataInLocalStorage(key, newData) {
+export async function editDataInLocalStorage(key, todoId, newData) {
     try {
-        // Get existing data from local storage
         const existingData = getDataFromLocalStorage(key);
-
-        if (existingData === null) {
-            console.error(
-                'Cannot edit data: No existing data found in local storage.'
-            );
+        if (!existingData) {
+            console.error('Cannot edit data: No existing data found in local storage.');
             return false;
         }
-        if (Array.isArray(newData)) {
-            // Merge arrays if newData is an array
-            const updateData = [...existingData, ...newData];
-            return saveDataToLocalStorage(key, updateData);
-        } else if (typeof newData === 'object') {
-            // Merge objects if newData is an object
-            const updateData = { ...existingData, ...newData };
-            return saveDataToLocalStorage(key, updateData);
-        } else {
-            console.error('Invalid data type. Expected an array or an object.');
-            return;
+
+        // Find the project containing the todo item with the matching id
+        const projectIndex = existingData.findIndex(project => project.todos.some(todo => todo.id === todoId));
+        if (projectIndex === -1) {
+            console.error('Todo with specified id not found in existing data.');
+            return false;
         }
+
+        // Find the index of the todo item within the project
+        const todoIndex = existingData[projectIndex].todos.findIndex(todo => todo.id === todoId);
+        if (todoIndex === -1) {
+            console.error('Todo with specified id not found in existing data.');
+            return false;
+        }
+
+        // Update the todo item with the provided newData
+        existingData[projectIndex].todos[todoIndex] = { ...existingData[projectIndex].todos[todoIndex], ...newData };
+
+        console.log('projectIndex: ', projectIndex)
+        console.log('todoIndex: ', todoIndex)
+        // Save the updated data to local storage
+        await saveDataToLocalStorage(key, existingData);
+        return true;
     } catch (error) {
         console.error('Error editing data in local storage: ', error);
         return false;
     }
 }
+

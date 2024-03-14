@@ -1,77 +1,79 @@
 import { datePickerHandler } from '../utility/datePicker.js';
 import { TodoFormHandler } from '../utility/todoFormHandler.js';
-import {
-    projectManager,
-    renderContainer,
-} from '../pageLoaders/homePageLoader.js';
+import { projectManager } from '../pageLoaders/homePageLoader.js';
 
-async function createDialog(content) {
+export async function dialogHandler(button, id, todoData) {
+    try {
+        const newTodoButton = document.getElementById('newTodoButton');
+        const detailsButton = document.getElementById(id);
+        const dialog = await createDialog();
+
+        if (button === newTodoButton) {
+            setupNewTodoDialog(dialog);
+        } else if (button === detailsButton) {
+            setupDetailsDialog(dialog, todoData);
+        }
+
+        setupDialogClose(dialog);
+    } catch (error) {
+        console.error('Error in dialogHandler:', error);
+    }
+}
+
+async function createDialog() {
     const dialog = document.createElement('dialog');
     dialog.id = 'dialog';
 
-    dialog.innerHTML = content;
+    const response = await fetch('dialogFormContent.html');
+    if (!response.ok) {
+        throw new Error('Failed to fetch dialog form content');
+    }
 
+    dialog.innerHTML = await response.text();
     document.body.appendChild(dialog);
 
     return dialog;
 }
 
-export async function dialogHandler(button, id, todoData) {
-    try {
-        // console.log(todoFormHandler.handleSave);
-        const newTodoButton = document.getElementById('newTodoButton');
-        const detailsButton = document.getElementById(id);
+function setupNewTodoDialog(dialog) {
+    dialog.showModal();
+    datePickerHandler();
 
-        const response = await fetch('dialogFormContent.html');
-        if (!response.ok) {
-            throw new Error('Failed to fetch dialog form content');
-        }
-        const html = await response.text();
-        const dialog = await createDialog(html);
-        let formButton = document.getElementById('form-button');
+    const formButton = setupFormButton(dialog, 'submit', 'Add');
 
-        if (button === newTodoButton) {
-            dialog.showModal();
-            datePickerHandler();
+    formButton.addEventListener('click', (event) => {
+        todoFormInit().handleSubmit(event);
+    });
+}
 
-            formButton.setAttribute('type', 'submit');
-            formButton.textContent = 'Add';
-            todoFormInit();
+function setupDetailsDialog(dialog, todoData) {
+    dialog.showModal();
+    datePickerHandler();
 
-            formButton.addEventListener('click', (event) => {
-                todoFormInit().handleSubmit(event)
-            })
+    const formButton = setupFormButton(dialog, 'save', 'Save');
+    todoFormInit().populateTodoForm(todoData);
 
-        } else if (button === detailsButton) {
-            // let formButton = document.getElementById('form-button');
-            dialog.showModal();
-            datePickerHandler();
+    formButton.addEventListener('click', (event) => {
+        todoFormInit().handleSave(event, todoData);
+    });
+}
 
-            formButton.setAttribute('type', 'save');
-            formButton.textContent = 'Save';
+function setupFormButton(dialog, type, text) {
+    const formButton = dialog.querySelector('#form-button');
+    formButton.setAttribute('type', type);
+    formButton.textContent = text;
+    return formButton;
+}
 
-            todoFormInit().populateTodoForm(todoData);
+function setupDialogClose(dialog) {
+    const dialogClose = dialog.querySelector('#dialog-close-btn');
 
-            formButton.addEventListener('click', (event) => {
-                todoFormInit().handleSave(event, todoData)
-            })
-
-        }
-
-        const dialogClose = document.getElementById('dialog-close-btn');
-
-        dialogClose.addEventListener('click', () => {
-            const formElement = document.getElementById('todo-form');
-            let formButton = document.getElementById('form-button');
-            formButton.removeAttribute('type');
-            formElement.reset();
-            dialog.close();
-
-            removeDialog(dialog);
-        });
-    } catch (error) {
-        console.error('Error in dialogHandler:', error);
-    }
+    dialogClose.addEventListener('click', () => {
+        const formElement = dialog.querySelector('#todo-form');
+        formElement.reset();
+        dialog.close();
+        removeDialog(dialog);
+    });
 }
 
 /**

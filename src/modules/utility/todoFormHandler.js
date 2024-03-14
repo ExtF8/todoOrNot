@@ -12,13 +12,27 @@ import {
 } from './localStorageManager.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
+/**
+ * Represents a form handler for managing todo items.
+ */
 export class TodoFormHandler {
+    /**
+     * Creates an instance of TodoFormHandler.
+     *
+     * @param {Document} document - The document object.
+     * @param {ProjectManager} projectManager - The project manager object.
+     */
     constructor(document, projectManager) {
         this.document = document;
         this.projectManager = projectManager;
         this.formElement = this.document.getElementById('todo-form');
     }
 
+    /**
+     * Handles the form submission event.
+     *
+     * @param {Event} event - The form submission event.
+     */
     async handleSubmit(event) {
         event.preventDefault();
         try {
@@ -50,6 +64,12 @@ export class TodoFormHandler {
         }
     }
 
+    /**
+     * Handles the save event for a specific todo item.
+     *
+     * @param {Event} event - The save event.
+     * @param {Todo} todoData - The todo item data.
+     */
     async handleSave(event, todoData) {
         event.preventDefault();
         try {
@@ -75,6 +95,12 @@ export class TodoFormHandler {
         }
     }
 
+    /**
+     * Extracts form data from the todo form.
+     *
+     * @param {Todo} [todoData={}] - The todo item data.
+     * @returns {Object} - The extracted form data.
+     */
     extractFormData(todoData = {}) {
         const formData = new FormData(this.formElement);
         return {
@@ -87,6 +113,11 @@ export class TodoFormHandler {
         };
     }
 
+    /**
+     * Adds a new todo item to the todo list.
+     *
+     * @param {Todo} newTodo - The new todo item.
+     */
     addNewTodoToList(newTodo) {
         // Get the container element where todos are displayed
         const todoList = document.querySelector('.todo-list');
@@ -98,6 +129,13 @@ export class TodoFormHandler {
         todoList.appendChild(newTodoItem);
     }
 
+    /**
+     * Adds a new todo item to the existing data.
+     *
+     * @param {Array} existingData - The existing data.
+     * @param {Todo} newTodo - The new todo item.
+     * @returns {Array} - The updated data.
+     */
     addTodoToExistingData(existingData, newTodo) {
         // Check if there's a project matching the new todo's project name
         const projectIndex = existingData.findIndex(
@@ -119,6 +157,11 @@ export class TodoFormHandler {
         return existingData;
     }
 
+    /**
+     * Updates a todo item in the todo list.
+     *
+     * @param {Todo} updatedTodo - The updated todo item.
+     */
     updatedTodoInList(updatedTodo) {
         // Get the container where todos are displayed
         const todoList = document.querySelector('.todo-list');
@@ -137,6 +180,12 @@ export class TodoFormHandler {
         }
     }
 
+    /**
+     * Creates a new todo item from form data.
+     *
+     * @param {Object} formData - The form data.
+     * @returns {Todo} - The new todo item.
+     */
     createTodoFromFormData(formData) {
         const random = Math.random().toFixed();
         const id = Date.now() + random;
@@ -150,6 +199,11 @@ export class TodoFormHandler {
         );
     }
 
+    /**
+     * Populates the todo form with data.
+     *
+     * @param {Todo} todoData - The todo item data.
+     */
     populateTodoForm(todoData) {
         const todoForm = this.formElement;
         todoForm.elements.id = todoData.id;
@@ -160,11 +214,17 @@ export class TodoFormHandler {
         todoForm.elements['priority'].value = todoData.priority;
     }
 
+    /**
+     * Closes the dialog.
+     */
     closeDialog() {
         const dialog = this.document.getElementById('dialog');
         dialog.close();
     }
 
+    /**
+     * Clears the form.
+     */
     clearForm() {
         this.formElement.reset();
     }

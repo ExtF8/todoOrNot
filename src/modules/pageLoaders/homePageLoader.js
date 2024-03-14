@@ -54,22 +54,23 @@ export default function homePageLoader(content) {
 
         try {
             const newTodoButton = document.getElementById('newTodoButton');
-            await dialogHandler(newTodoButton);
-            todoFormInit()
+            newTodoButton.addEventListener('click', async () => {
+                await dialogHandler(newTodoButton, 'newTodoButton');
+            });
         } catch (error) {
             handleDialogError(error);
         }
     });
 }
-/**
- * Initializes the TodoFormHandler and returns an instance of it.
- *
- * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
- */
-const todoFormInit = () => {
-    const todoFormHandler = new TodoFormHandler(document, projectManager);
-    return todoFormHandler;
-};
+// /**
+//  * Initializes the TodoFormHandler and returns an instance of it.
+//  *
+//  * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
+//  */
+// const todoFormInit = () => {
+//     const todoFormHandler = new TodoFormHandler(document, projectManager);
+//     return todoFormHandler;
+// };
 
 /**
  * Renders the primary container for the home page
@@ -80,7 +81,7 @@ const todoFormInit = () => {
  */
 export function renderContainer(projectData) {
     // Use projectsData if provided. otherwise fallback to sample data
-    const project = projectData || sampleData.projects
+    const project = projectData || sampleData.projects;
 
     const container = createDiv('class', 'todo-home-container');
     const title = createTitle('class', 'title', 'Todos');
@@ -132,6 +133,7 @@ export function renderTodoItem(todo) {
         todo,
         renderTodoContent
     );
+    listItem.id = `todo-${todo.id}`;
     return listItem;
 }
 
@@ -143,6 +145,7 @@ export function renderTodoItem(todo) {
 function renderTodoContent(todo) {
     const container = createDiv('class', 'todo-content');
 
+
     const checkbox = createDiv('class', 'todo-checkbox');
 
     const todoTitle = createTitle('class', 'todo-title', todo.title);
@@ -153,11 +156,11 @@ function renderTodoContent(todo) {
     todoDetails.classList.add('details');
     todoDetails.textContent = 'Details';
     todoDetails.id = todo.id + 'details';
-    const todoDetailsId = todoDetails.id
+    const todoDetailsId = todoDetails.id;
 
     const todoDelete = createDiv('class', 'todo-item');
     todoDelete.classList.add('delete');
-    todoDelete.id = todo.id;
+    todoDelete.id = todo.id + 'delete';
 
     const todoManager = new TodoManager(
         todo.id,
@@ -200,7 +203,7 @@ function renderTodoContent(todo) {
  * @param {String} priority - The priority value of the todo item
  * @returns - The CSS class name corresponding to the priority
  */
-function getPriorityClass(priority) {
+export function getPriorityClass(priority) {
     switch (priority) {
         case 'low':
             return 'priority-low';

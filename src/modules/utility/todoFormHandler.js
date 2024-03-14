@@ -1,9 +1,14 @@
 import { Todo } from '../entities/todoItems.js';
 import { sampleData } from '../pageData/sampleData.js';
-import { renderTodoItem } from '../pageLoaders/homePageLoader.js';
+import {
+    getPriorityClass,
+    renderTodoItem,
+} from '../pageLoaders/homePageLoader.js';
+import { removeDialog } from './dialogHandler.js';
 import {
     saveDataToLocalStorage,
     getDataFromLocalStorage,
+    editDataInLocalStorage,
 } from './localStorageManager.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
@@ -13,14 +18,17 @@ export class TodoFormHandler {
         this.projectManager = projectManager;
 
         this.formElement = this.document.getElementById('todo-form');
-        this.formElement.addEventListener(
-            'submit',
-            this.handleSubmit.bind(this)
-        );
+
+        // this.formElement.addEventListener(
+        //     'submit',
+        //     this.handleSubmit.bind(this)
+        // );
+
+        // this.formElement.addEventListener('save', this.handleSave.bind(this));
     }
 
     async handleSubmit(event) {
-
+        console.log('handleSubmit started');
         event.preventDefault();
         try {
             const formData = this.extractFormData();
@@ -41,11 +49,76 @@ export class TodoFormHandler {
             await saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
 
             this.addNewTodoToList(newTodo);
+
+            // this.formElement.removeEventListener(
+            //     'submit',
+            //     this.handleSubmit.bind(this)
+            // );
             this.clearForm();
             this.closeDialog();
+
+            const dialog = document.getElementById('dialog');
+            removeDialog(dialog);
+            console.log('handleSubmit ended');
         } catch (error) {
             console.error('Error handling form submission: ', error);
         }
+    }
+
+    async handleSave(event, todoData) {
+        event.preventDefault();
+        console.log('handleSave started');
+
+        try {
+            // Extract the relevant data from the form
+            const formData = this.extractFormData(todoData);
+            // Merge the extracted form data with the existing todo data
+            const updatedTodoData = { ...todoData, ...formData };
+            // Save the updated data to local storage
+            await editDataInLocalStorage(
+                PROJECTS_STORAGE_KEY,
+                todoData.id,
+                updatedTodoData
+            );
+
+            this.updatedTodoInList(updatedTodoData);
+
+            console.log('mock save to local: ', updatedTodoData);
+
+            this.clearForm();
+            this.closeDialog();
+
+            const dialog = document.getElementById('dialog');
+            removeDialog(dialog);
+
+            console.log('handleSave ended');
+        } catch (error) {
+            console.error('Error saving data: ', error);
+        }
+    }
+
+    // extractDataFromTodoData(todoData) {
+    //     return {
+    //         id: todoData.id,
+    //         title: todoData.title,
+    //         project: todoData.project,
+    //         description: todoData.description,
+    //         dueDate: todoData.dueDate,
+    //         priority: todoData.priority,
+    //         completed: todoData.completed, // Assuming completed state needs to be updated too
+    //     };
+    // }
+
+    extractFormData(todoData = {}) {
+        const formData = new FormData(this.formElement);
+        return {
+            id: todoData.id || '',
+            title: formData.get('title'),
+            project: formData.get('project'),
+            description: formData.get('description'),
+            dueDate: formData.get('dueDate'),
+            priority: formData.get('priority'),
+        };
     }
 
     addNewTodoToList(newTodo) {
@@ -80,18 +153,25 @@ export class TodoFormHandler {
         return existingData;
     }
 
-    extractFormData() {
-        const formData = new FormData(this.formElement);
-        return {
-            title: formData.get('title'),
-            project: formData.get('project'),
-            description: formData.get('description'),
-            dueDate: formData.get('dueDate'),
-            priority: formData.get('priority'),
-        };
+    updatedTodoInList(updatedTodo) {
+        // Get the container where todos are displayed
+        const todoList = document.querySelector('.todo-list');
+
+        // Find the existing todo item in the list by its ID
+        const todoItem = todoList.querySelector(`#todo-${updatedTodo.id}`);
+        console.log(todoItem);
+
+        if (todoItem) {
+            todoItem.querySelector('.todo-title').textContent =
+                updatedTodo.title;
+            todoItem.querySelector('.todo-dueDate').textContent =
+                updatedTodo.dueDate;
+            todoItem.className = `todo-container ${getPriorityClass(
+                updatedTodo.priority
+            )}`;
+        }
     }
 
-    // convertTodo
     createTodoFromFormData(formData) {
         const random = Math.random().toFixed();
         const id = Date.now() + random;
@@ -105,13 +185,14 @@ export class TodoFormHandler {
         );
     }
 
-    populateTodoForm(formData) {
+    populateTodoForm(todoData) {
         const todoForm = this.formElement;
-        todoForm.elements['title'].value = formData.todoTitle;
-        todoForm.elements['project'].value = formData.todoProject;
-        todoForm.elements['description'].value = formData.todoDescription;
-        todoForm.elements['dueDate'].value = formData.todoDueDate;
-        todoForm.elements['priority'].value = formData.todoPriority;
+        todoForm.elements.id = todoData.id;
+        todoForm.elements['title'].value = todoData.title;
+        todoForm.elements['project'].value = todoData.project;
+        todoForm.elements['description'].value = todoData.description;
+        todoForm.elements['dueDate'].value = todoData.dueDate;
+        todoForm.elements['priority'].value = todoData.priority;
     }
 
     closeDialog() {

@@ -1,3 +1,11 @@
+/**
+ * @file This file is the entry point of the application and
+ * contains the main logic for loading different pages and handling navigation.
+ * It imports CSS stylesheets, functionality modules, and images.
+ * It also sets up event listeners for tab navigation, for the "New Todo" button and
+ * updates the active state of navigation buttons.
+ * @module index
+ */
 // Importing global, main, and dark mode CSS stylesheets
 import './styles/global.css';
 import './styles/main.css';
@@ -33,9 +41,10 @@ const content = document.getElementById('content');
 homePageLoader(content);
 
 /**
- * Set up click event listeners for tab navigation in the header
- * This allows switching between different pages (home, todos for today, todos for this week, projects) and
- * ensures the appropriate content is loaded and displayed
+ * Set up click event listeners for tab navigation in the header.
+ * This allows switching between different pages
+ * (home, todos for today, todos for this week, projects) and
+ * ensures the appropriate content is loaded and displayed.
  */
 navigationButtons.forEach((navigationButtons) => {
     const button = document.getElementById(navigationButtons);
@@ -62,8 +71,16 @@ navigationButtons.forEach((navigationButtons) => {
 });
 
 /**
- * Updates the active state of navigation buttons and removes active state in mobile navigation
- * @param {string} activeButtonId - The ID of the navigation button to be marked as active
+ * Handles the click event for the "New Todo" button and opens a dialog.
+ */
+newTodoButton.addEventListener('click', async () => {
+    await dialogHandler(newTodoButton, 'newTodoButton');
+});
+
+/**
+ * Updates the active state of navigation buttons and removes active state in mobile navigation.
+ *
+ * @param {string} activeButtonId - The ID of the navigation button to be marked as active.
  */
 export function updateNavigationActiveState(activeButtonId) {
     // Selecting elements related to mobile navigation
@@ -87,10 +104,3 @@ export function updateNavigationActiveState(activeButtonId) {
         }
     });
 }
-
-/**
- * Handles the click event for the "New Todo" button and opens a dialog.
- */
-newTodoButton.addEventListener('click', async () => {
-    await dialogHandler(newTodoButton, 'newTodoButton');
-});

@@ -46,19 +46,23 @@
                                 class="cs-ul"
                                 aria-expanded="false"
                             >
-                                <li class="cs-li" id="home">
-                                    <a href="" class="cs-li-link cs-active">
+                                <li class="cs-li" >
+                                    <div id="home" class="cs-li-link cs-active">
                                         Home
-                                    </a>
+                                    </div>
                                 </li>
-                                <li class="cs-li" id="today">
-                                    <a href="" class="cs-li-link"> Today </a>
+                                <li class="cs-li" >
+                                    <div id="today" class="cs-li-link"> Today </div>
                                 </li>
-                                <li class="cs-li">
-                                    <a href="" class="cs-li-link"> Week </a>
+                                <li class="cs-li" >
+                                    <div id="week" class="cs-li-link"> Week </div>
                                 </li>
                                 <!--Copy and paste this cs-dropdown list item and replace any .cs-li with this cs-dropdown group to make a new dropdown and it will work-->
-                                <li class="cs-li cs-dropdown" tabindex="0">
+                                <li
+                                    class="cs-li cs-dropdown"
+                                    tabindex="0"
+                                    id="projects"
+                                >
                                     <span class="cs-li-link">
                                         Projects
                                         <img
@@ -116,9 +120,6 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li class="cs-li">
-                                    <a href="" class="cs-li-link"> Notes </a>
-                                </li>
                             </ul>
                         </div>
                     </nav>
@@ -155,7 +156,5 @@
             </header>
             <section id="content"></section>
         </div>
-        
-
     </body>
 </html>

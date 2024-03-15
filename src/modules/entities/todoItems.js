@@ -1,7 +1,5 @@
-import {
-    projectManager,
-    renderContainer,
-} from '../pageLoaders/homePageLoader.js';
+import { projectManager } from '../pageLoaders/homePageLoader.js';
+import { renderContainer } from '../utility/todoRenderer.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 import { clearPage } from '../utility/elementRender.js';
 import {

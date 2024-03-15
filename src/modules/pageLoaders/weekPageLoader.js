@@ -8,6 +8,7 @@ import {
     renderContainer,
 } from '../utility/todoRenderer.js';
 import { clearPage } from '../utility/elementRender.js';
+import { TodoManager } from '../entities/todoItems.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -33,8 +34,14 @@ export default function weekPageLoader(content) {
         // Save sample data to local storage as as fallback
         saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
     }
+    const todoManager = new TodoManager();
+    const todoDueThisWeek = todoManager.getTodosDueThisWeek(existingData);
 
     const section = document.querySelector('#content');
-    const todoContainer = renderContainer(existingData);
+    const todoContainer = renderContainer(todoDueThisWeek);
     section.appendChild(todoContainer);
+
+    const title = document.querySelector('.title');
+    const titleForToday = 'Due This Week';
+    title.textContent = title.textContent + ' ' + titleForToday;
 }

@@ -8,6 +8,7 @@ import {
     renderContainer,
 } from '../utility/todoRenderer.js';
 import { clearPage } from '../utility/elementRender.js';
+import { TodoManager } from '../entities/todoItems.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -19,7 +20,6 @@ const PROJECTS_STORAGE_KEY = 'projects';
 export default function todayPageLoader(content) {
     clearPage(content);
     let existingData;
-
     try {
         // Try to retrieve existing data from local storage
         existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
@@ -33,8 +33,14 @@ export default function todayPageLoader(content) {
         // Save sample data to local storage as as fallback
         saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
     }
+    const todoManager = new TodoManager();
+    const todoDueToday = todoManager.getTodosDueToday(existingData);
 
     const section = document.querySelector('#content');
-    const todoContainer = renderContainer(existingData);
+    const todoContainer = renderContainer(todoDueToday);
     section.appendChild(todoContainer);
+
+    const title = document.querySelector('.title');
+    const titleForToday = 'Due Today';
+    title.textContent = title.textContent + ' ' + titleForToday;
 }

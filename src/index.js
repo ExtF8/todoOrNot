@@ -25,6 +25,7 @@ import homePageLoader from './modules/pageLoaders/homePageLoader.js';
 import todayPageLoader from './modules/pageLoaders/todayPageLoader.js';
 import weekPageLoader from './modules/pageLoaders/weekPageLoader.js';
 import projectsPageLoader from './modules/pageLoaders/projectsPageLoader.js';
+import { ProjectManager } from './modules/entities/project.js';
 
 // Global variables setup
 // Navigation button IDs
@@ -41,6 +42,10 @@ mobileNavigationToggling();
 // Load the initial home page content
 homePageLoader(content);
 
+// Add projects in navigation bar
+const projectManager = new ProjectManager();
+projectManager.displayProjectsInNavigationBar();
+
 /**
  * Set up click event listeners for tab navigation in the header.
  * This allows switching between different pages
@@ -48,11 +53,11 @@ homePageLoader(content);
  * ensures the appropriate content is loaded and displayed.
  */
 try {
-    navigationButtons.forEach((navigationButtons) => {
-        const button = document.getElementById(navigationButtons);
+    navigationButtons.forEach((navigationButton) => {
+        const button = document.getElementById(navigationButton);
 
         button.addEventListener('click', () => {
-            switch (navigationButtons) {
+            switch (navigationButton) {
                 case 'home':
                     homePageLoader(content);
                     break;
@@ -62,13 +67,10 @@ try {
                 case 'week':
                     weekPageLoader(content);
                     break;
-                case 'projects':
-                    projectsPageLoader(content);
-                    break;
                 default:
                     homePageLoader(content); // Default page if page is not specified
             }
-            updateNavigationActiveState(navigationButtons);
+            updateNavigationActiveState(navigationButton);
         });
     });
 } catch (error) {
@@ -77,6 +79,23 @@ try {
         error
     );
 }
+
+// Add event listeners to Project dropdown items
+const dropdown = document.getElementById('projects');
+dropdown.addEventListener('click', (event) => {
+    // Check if the clicked element is a dropdown item
+    if (event.target.classList.contains('cs-drop-link')) {
+        // Prevent default behavior of links
+        event.preventDefault();
+
+        // Get the text content of the clicked item
+        const selectedProjectName = event.target.textContent.trim();
+        console.log('selectedProjectName: ', selectedProjectName);
+
+        // Pass the selected project name to the projectsPageLoader function
+        projectsPageLoader(content, selectedProjectName);
+    }
+});
 
 /**
  * Handles the click event for the "New Todo" button and opens a dialog.
@@ -88,6 +107,8 @@ try {
 } catch (error) {
     handleDialogError(error);
 }
+
+
 
 /**
  * Updates the active state of navigation buttons and removes active state in mobile navigation.

@@ -90,7 +90,6 @@ dropdown.addEventListener('click', (event) => {
 
         // Get the text content of the clicked item
         const selectedProjectName = event.target.textContent.trim();
-        console.log('selectedProjectName: ', selectedProjectName);
 
         // Pass the selected project name to the projectsPageLoader function
         projectsPageLoader(content, selectedProjectName);

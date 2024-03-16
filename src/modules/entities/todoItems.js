@@ -290,6 +290,31 @@ export class TodoManager {
     }
 
     /**
+     * Retrieves todos for a specific project from existing data.
+     *
+     * @param {Array} existingData - The existing data containing todos for multiple projects.
+     * @param {string} projectName - The name of the project to retrieve todos for.
+     * @returns {Array|null} - An array of todos for the specified project, or null if the project is not found.
+     */
+    getTodosForProject(existingData, projectName) {
+        // const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+        if (!existingData) {
+            console.error('No existing data found in local storage');
+            return null;
+        }
+
+        const filteredProjects = existingData.filter(
+            (project) => project.name === projectName
+        );
+
+        if (!filteredProjects.length === 0) {
+            console.error(`Project '${projectName}' not found`);
+            return null;
+        }
+        return filteredProjects;
+    }
+
+    /**
      * Finds a Todo item by its ID.
      *
      * @param {Array} existingData - The existing data from local storage.

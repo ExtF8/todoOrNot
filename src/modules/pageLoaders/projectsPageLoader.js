@@ -8,6 +8,7 @@ import {
     renderContainer,
 } from '../utility/todoRenderer.js';
 import { clearPage } from '../utility/elementRender.js';
+import { TodoManager } from '../entities/todoItems.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
 
@@ -16,7 +17,7 @@ const PROJECTS_STORAGE_KEY = 'projects';
  *
  * @param {HTMLElement} content - The parent element where the projects page will be rendered.
  */
-export default function projectsPageLoader(content) {
+export default function projectsPageLoader(content, selectedProjectName) {
     clearPage(content);
     let existingData;
 
@@ -34,7 +35,19 @@ export default function projectsPageLoader(content) {
         saveDataToLocalStorage(PROJECTS_STORAGE_KEY, sampleData.projects);
     }
 
+    // Filter todos for the selected project
+    const todoManager = new TodoManager();
+    const projectData = todoManager.getTodosForProject(
+        existingData,
+        selectedProjectName
+    );
+
+    // Render todos for the selected project
     const section = document.querySelector('#content');
-    const todoContainer = renderContainer(existingData);
+    const todoContainer = renderContainer(projectData);
     section.appendChild(todoContainer);
+
+    const title = document.querySelector('.title');
+    const titleOfProject = 'In ' + selectedProjectName;
+    title.textContent = title.textContent + ' ' + titleOfProject;
 }

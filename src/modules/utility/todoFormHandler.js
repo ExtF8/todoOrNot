@@ -3,7 +3,7 @@ import { sampleData } from '../pageData/sampleData.js';
 import {
     getPriorityClass,
     renderTodoItem,
-} from '../pageLoaders/homePageLoader.js';
+} from './todoRenderer.js';
 import { removeDialog } from './dialogHandler.js';
 import {
     saveDataToLocalStorage,

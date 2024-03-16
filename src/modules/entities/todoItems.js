@@ -1,7 +1,5 @@
-import {
-    projectManager,
-    renderContainer,
-} from '../pageLoaders/homePageLoader.js';
+import { projectManager } from '../pageLoaders/homePageLoader.js';
+import { renderContainer } from '../utility/todoRenderer.js';
 import { dialogHandler } from '../utility/dialogHandler.js';
 import { clearPage } from '../utility/elementRender.js';
 import {
@@ -11,6 +9,7 @@ import {
 } from '../utility/localStorageManager.js';
 
 const PROJECTS_STORAGE_KEY = 'projects';
+
 /**
  * Represents a Todo item.
  *
@@ -211,6 +210,108 @@ export class TodoManager {
                 console.error('Error handling details click: ', error);
             }
         });
+    }
+
+    /**
+     * Retrieves the todos that are due today.
+     *
+     * @param {Array} existingData - The existing todo items data.
+     * @returns {Array} - The filtered todo items due today.
+     */
+    getTodosDueToday(existingData) {
+        // Get today's date in format ('Y-m-d')
+        const today = new Date().toISOString().split('T')[0];
+        // Get filtered projects based on today
+        const filteredTodosForToday = this.getFilteredProjects(
+            existingData,
+            today,
+            today
+        );
+        return filteredTodosForToday;
+    }
+
+    /**
+     * Retrieves todos due within the current week.
+     *
+     * @param {Array} existingData - The existing todo data.
+     * @returns {Array} - The filtered todos due within the current week.
+     */
+    getTodosDueThisWeek(existingData) {
+        // Get start of the current week
+        const startOfWeek = new Date();
+        // Set to Monday of the current week
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+        startOfWeek.toISOString().split('T')[0];
+
+        // Get end of the current week
+        const endOfWeek = new Date(startOfWeek);
+        // Set to Sunday of the current week
+        endOfWeek.setDate(endOfWeek.getDate() + 6);
+        endOfWeek.toISOString().split('T')[0];
+
+        const filteredTodosForThisWeek = this.getFilteredProjects(
+            existingData,
+            startOfWeek,
+            endOfWeek
+        );
+
+        return filteredTodosForThisWeek;
+    }
+
+    /**
+     * Filters projects and their todos based on the dueDate
+     * being within the specified date range.
+     *
+     * @param {Array} existingData - The array of existing projects and todos.
+     * @param {string} startDate - The start date of the date range.
+     * @param {string} endDate - The end date of the date range.
+     * @returns {Array} - The filtered projects and their todos.
+     */
+    getFilteredProjects(existingData, startDate, endDate) {
+        // Filter projects and their todos based on the dueDate being within the specified date range
+        // Need to filter projects because renderTodosList method expects projects
+        const filteredProjects = existingData
+            .map((project) => ({
+                ...project,
+                todos: project.todos.filter((todo) => {
+                    // Convert todo due date string to a Date object
+                    const todoDueDate = new Date(todo.dueDate);
+                    // Check if todo due date falls within the specified date range
+                    const todoDateRange =
+                        todoDueDate >= new Date(startDate) &&
+                        todoDueDate <= new Date(endDate);
+
+                    return todoDateRange;
+                }),
+            }))
+            .filter((project) => project.todos.length > 0);
+
+        return filteredProjects;
+    }
+
+    /**
+     * Retrieves todos for a specific project from existing data.
+     *
+     * @param {Array} existingData - The existing data containing todos for multiple projects.
+     * @param {string} projectName - The name of the project to retrieve todos for.
+     * @returns {Array|null} - An array of todos for the specified project, or null if the project is not found.
+     */
+    getTodosForProject(existingData, projectName) {
+        // const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+        if (!existingData) {
+            console.error('No existing data found in local storage');
+            return null;
+        }
+
+        const filteredProjects = existingData.filter(
+            (project) => project.name === projectName
+        );
+
+        if (!filteredProjects.length === 0) {
+            console.error(`Project '${projectName}' not found`);
+            return null;
+        }
+        return filteredProjects;
     }
 
     /**

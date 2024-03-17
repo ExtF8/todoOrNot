@@ -249,13 +249,11 @@ export class TodoManager {
                 (currentDayOfWeek === 0 ? -6 : 1)
         );
         startOfWeek.setHours(0, 0, 0, 0); // Set time to start of day
-        console.log('startOfWeek: ', startOfWeek);
 
         // Calculate the end of the week (Sunday)
         const endOfWeek = new Date(startOfWeek);
         endOfWeek.setDate(startOfWeek.getDate() + 6); // End of week is 6 days from start
         endOfWeek.setHours(23, 59, 59, 999); // Set time to end of day
-        console.log('endOfWeek: ', endOfWeek);
 
         const filteredTodosForThisWeek = this.getFilteredProjects(
             existingData,

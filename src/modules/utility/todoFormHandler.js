@@ -1,9 +1,7 @@
 import { Todo } from '../entities/todoItems.js';
+import { Project, ProjectManager } from '../entities/project.js';
 import { sampleData } from '../pageData/sampleData.js';
-import {
-    getPriorityClass,
-    renderTodoItem,
-} from './todoRenderer.js';
+import { getPriorityClass, renderTodoItem } from './todoRenderer.js';
 import { removeDialog } from './dialogHandler.js';
 import {
     saveDataToLocalStorage,
@@ -75,6 +73,16 @@ export class TodoFormHandler {
         try {
             // Extract the relevant data from the form
             const formData = this.extractFormData(todoData);
+
+            // Check if the project name has changed
+            if (formData.project !== todoData.project) {
+                this.updateProjectNameInManager(
+                    todoData.project,
+                    formData.project,
+                    todoData
+                );
+            }
+
             // Merge the extracted form data with the existing todo data
             const updatedTodoData = { ...todoData, ...formData };
             // Save the updated data to local storage
@@ -92,6 +100,60 @@ export class TodoFormHandler {
             removeDialog(dialog);
         } catch (error) {
             console.error('Error saving data: ', error);
+        }
+    }
+
+    /**
+     * Update the project name in the existing data retrieved from local storage.
+     *
+     * @param {string} oldProjectName - The old project name.
+     * @param {string} newProjectName - The new project name.
+     * @param {Todo} todo - The todo item associated with the project.
+     */
+    updateProjectNameInManager(oldProjectName, newProjectName, todo) {
+        // Retrieve existing data from local storage
+        const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+
+        if (!existingData) {
+            console.error('No existing data found in local storage.');
+            return;
+        }
+        // Find the project index with the old name
+        const projectIndex = existingData.findIndex(
+            (project) => project.name === oldProjectName
+        );
+
+        if (projectIndex !== -1) {
+            // Remove the todo item from the original project
+            const updatedProject = existingData[projectIndex];
+            updatedProject.todos = updatedProject.todos.filter(
+                (existingTodo) => existingTodo.id !== todo.id
+            );
+
+            // Save the updated project back to existing data
+            existingData[projectIndex] = updatedProject;
+
+            // Create a new project with the new name if it doesn't exist
+            const newProjectIndex = existingData.findIndex(
+                (project) => project.name === newProjectName
+            );
+
+            if (newProjectIndex === -1) {
+                const newProjectId = Date.now();
+                const newProject = new Project(newProjectId, newProjectName);
+                newProject.todos.push(todo);
+                existingData.push(newProject);
+            } else {
+                // Add the todo item to the existing project with the new name
+                existingData[newProjectIndex].todos.push(todo);
+            }
+
+            // Save the updated data back to local storage
+            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, existingData);
+        } else {
+            console.error(
+                'Project with specified name not found in existing data.'
+            );
         }
     }
 

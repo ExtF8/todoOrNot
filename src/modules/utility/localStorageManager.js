@@ -1,3 +1,5 @@
+import { Project } from '../entities/project';
+
 /**
  * Saves data to local storage.
  *
@@ -89,28 +91,49 @@ export function removeTodoFromLocalStorage(existingData, todoIDToRemove) {
  */
 export async function editDataInLocalStorage(key, todoId, newData) {
     try {
-        const existingData = getDataFromLocalStorage(key);
+        let existingData = getDataFromLocalStorage(key);
         if (!existingData) {
-            console.error('Cannot edit data: No existing data found in local storage.');
+            console.error(
+                'Cannot edit data: No existing data found in local storage.'
+            );
             return false;
         }
 
-        // Find the project containing the todo item with the matching id
-        const projectIndex = existingData.findIndex(project => project.todos.some(todo => todo.id === todoId));
-        if (projectIndex === -1) {
-            console.error('Todo with specified id not found in existing data.');
-            return false;
+        // Find the project and todo index
+        let projectIndex = -1;
+        let todoIndex = -1;
+        for (let i = 0; i < existingData.length; i++) {
+            todoIndex = existingData[i].todos.findIndex(
+                (todo) => todo.id === todoId
+            );
+            if (todoIndex !== -1) {
+                projectIndex = i;
+                break;
+            }
         }
 
-        // Find the index of the todo item within the project
-        const todoIndex = existingData[projectIndex].todos.findIndex(todo => todo.id === todoId);
-        if (todoIndex === -1) {
-            console.error('Todo with specified id not found in existing data.');
-            return false;
+        if (projectIndex === -1 || todoIndex === -1) {
+            throw new Error(
+                'Todo with specified id not found in existing data.'
+            );
         }
 
-        // Update the todo item with the provided newData
-        existingData[projectIndex].todos[todoIndex] = { ...existingData[projectIndex].todos[todoIndex], ...newData };
+        // Check if the project name has been changed
+        if (newData.project !== existingData[projectIndex].name) {
+            // Call the updateTodoProject method
+            existingData = updateTodoProject(
+                existingData,
+                projectIndex,
+                todoIndex,
+                newData.project
+            );
+        } else {
+            // Update the todo item with the provided newData
+            existingData[projectIndex].todos[todoIndex] = {
+                ...existingData[projectIndex].todos[todoIndex],
+                ...newData,
+            };
+        }
 
         // Save the updated data to local storage
         await saveDataToLocalStorage(key, existingData);
@@ -119,4 +142,48 @@ export async function editDataInLocalStorage(key, todoId, newData) {
         console.error('Error editing data in local storage: ', error);
         return false;
     }
+}
+
+/**
+ * Update the project name in the existing data retrieved from local storage and manages todo item relocation.
+ * If a project with the new project name does not exist, a new project is created.
+ * If the todo with the specified ID is not found in the existing data, no changes are made.
+ *
+ * @param {Array} existingData - The existing data retrieved from local storage.
+ * @param {number} projectIndex - The index of the project containing the todo item to be updated.
+ * @param {number} todoIndex - The index of the todo item within the project to be updated.
+ * @param {number} newProjectName - The new project name.
+ * @returns {Array} The updated existing data with the project and todo item modifications.
+ */
+function updateTodoProject(
+    existingData,
+    projectIndex,
+    todoIndex,
+    newProjectName
+) {
+    // Update the project name in the todo item
+    existingData[projectIndex].todos[todoIndex].project = newProjectName;
+
+    // Check if a project already exists with the new project name
+    const newProjectIndex = existingData.findIndex(
+        (project) => project.name === newProjectName
+    );
+
+    if (newProjectIndex === -1) {
+        // Create a new project with the new project name
+        const newProjectId = Date.now();
+        const newProject = new Project(newProjectId, newProjectName);
+        newProject.todos.push(existingData[projectIndex].todos[todoIndex]);
+        existingData.push(newProject);
+    } else {
+        // Add the todo item to the existing project with the new project name
+        existingData[newProjectIndex].todos.push(
+            existingData[projectIndex].todos[todoIndex]
+        );
+    }
+
+    // Remove the todo item from the original project
+    existingData[projectIndex].todos.splice(todoIndex, 1);
+
+    return existingData;
 }

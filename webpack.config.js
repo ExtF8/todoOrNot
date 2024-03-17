@@ -4,11 +4,14 @@ const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-    mode: 'development',
+    mode: 'production',
     entry: './src/index.js',
     devtool: 'source-map',
     devServer: {
         static: './dist',
+    },
+    performance: {
+        hints: false,
     },
     plugins: [
         new HtmlWebpackPlugin({

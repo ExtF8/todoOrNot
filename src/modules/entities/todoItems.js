@@ -239,19 +239,23 @@ export class TodoManager {
     getTodosDueThisWeek(existingData) {
         // Get today's date
         const today = new Date();
-        // Get start of the current week
+        const currentDayOfWeek = today.getDay();
+
+        // Calculate the start of the week (Monday)
         const startOfWeek = new Date(today);
-
-        // Set to Monday of the current week
         startOfWeek.setDate(
-            startOfWeek.getDate() - ((startOfWeek.getDay() + 6) % 7)
+            today.getDate() -
+                currentDayOfWeek +
+                (currentDayOfWeek === 0 ? -6 : 1)
         );
-        startOfWeek.setHours(0, 0, 0, 0);
+        startOfWeek.setHours(0, 0, 0, 0); // Set time to start of day
+        console.log('startOfWeek: ', startOfWeek);
 
-        // Get end of the current week
-        const endOfWeek = new Date(today);
-        endOfWeek.setDate(endOfWeek.getDate() + endOfWeek.getDay());
-        endOfWeek.setHours(23, 59, 59, 999);
+        // Calculate the end of the week (Sunday)
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6); // End of week is 6 days from start
+        endOfWeek.setHours(23, 59, 59, 999); // Set time to end of day
+        console.log('endOfWeek: ', endOfWeek);
 
         const filteredTodosForThisWeek = this.getFilteredProjects(
             existingData,

@@ -102,6 +102,9 @@ export class TodoManager {
 
         checkbox.addEventListener('click', (event) => {
             event.preventDefault();
+            handleCheckBoxClick();
+        });
+        const handleCheckBoxClick = () => {
             // Toggle the 'todo-checked' class
             checkbox.classList.toggle('todo-checked');
 
@@ -114,6 +117,9 @@ export class TodoManager {
 
             // Update todo completion status in local storage
             this.updateTodoCompletion(todoId, isCompleted);
+        };
+        checkbox.removeEventListener('click', () => {
+            handleCheckBoxClick();
         });
     }
 
@@ -127,6 +133,9 @@ export class TodoManager {
     todoDeleteHandler(todoDelete, todoId, projectName) {
         todoDelete.addEventListener('click', (event) => {
             event.preventDefault();
+            handleDeleteButtonClick();
+        });
+        const handleDeleteButtonClick = () => {
             const todoToRemove = todoId;
 
             let existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
@@ -144,6 +153,9 @@ export class TodoManager {
             const todoContainer = renderContainer(existingData);
             clearPage(section);
             section.appendChild(todoContainer);
+        };
+        todoDelete.removeEventListener('click', () => {
+            handleDeleteButtonClick();
         });
     }
 
@@ -188,8 +200,11 @@ export class TodoManager {
      * @param {number} id - The ID of the Todo item.
      */
     todoDetailsHandler(todoDetails, todoDetailsId, id) {
-        todoDetails.addEventListener('click', async (event) => {
+        todoDetails.addEventListener('click', (event) => {
             event.preventDefault();
+            handleDetailsButtonClick();
+        });
+        const handleDetailsButtonClick = async () => {
             try {
                 // Retrieve todo data from local storage based on todo ID
                 const existingData =
@@ -209,6 +224,9 @@ export class TodoManager {
             } catch (error) {
                 console.error('Error handling details click: ', error);
             }
+        };
+        todoDetails.removeEventListener('click', () => {
+            handleDetailsButtonClick();
         });
     }
 

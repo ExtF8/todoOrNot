@@ -680,7 +680,7 @@
     #todo-form-container .cs-container {
         width: 100%;
         /* changes to 1280px at desktop */
-        max-width: 50rem;
+        max-width: 34rem;
         margin: auto;
         display: flex;
         flex-direction: column;
@@ -746,7 +746,6 @@
         color: var(--headerColor);
         display: flex;
         justify-content: center;
-        align-items: flex-start;
         flex-direction: column;
     }
 
@@ -927,7 +926,7 @@
     }
 
     #todo-form-container .cs-label {
-        width: 48%;
+        width: 100%;
     }
 
     #todo-form-container .label-note {

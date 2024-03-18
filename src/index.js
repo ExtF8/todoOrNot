@@ -17,9 +17,6 @@ import mobileNavigationToggling from './modules/utility/mobileNavigation.js';
 import { dialogHandler } from './modules/utility/dialogHandler.js';
 import { handleDialogError } from './modules/utility/todoRenderer.js';
 
-// Import images
-import logo from './assets/img/logo/todoOrNotLogo.png';
-
 // Importing page loader functions
 import homePageLoader from './modules/pageLoaders/homePageLoader.js';
 import todayPageLoader from './modules/pageLoaders/todayPageLoader.js';
@@ -57,6 +54,10 @@ try {
         const button = document.getElementById(navigationButton);
 
         button.addEventListener('click', () => {
+            buttonEventHandler();
+        });
+
+        const buttonEventHandler = () => {
             switch (navigationButton) {
                 case 'home':
                     homePageLoader(content);
@@ -71,6 +72,10 @@ try {
                     homePageLoader(content); // Default page if page is not specified
             }
             updateNavigationActiveState(navigationButton);
+        };
+
+        button.removeEventListener('click', () => {
+            buttonEventHandler();
         });
     });
 } catch (error) {
@@ -80,34 +85,51 @@ try {
     );
 }
 
-// Add event listeners to Project dropdown items
-const dropdown = document.getElementById('projects');
-dropdown.addEventListener('click', (event) => {
-    // Check if the clicked element is a dropdown item
-    if (event.target.classList.contains('cs-drop-link')) {
-        // Prevent default behavior of links
-        event.preventDefault();
+/**
+ * Handles the click event for dropdown buttons for Projects
+ */
+try {
+    // Add event listeners to Project dropdown items
+    const dropdown = document.getElementById('projects');
+    dropdown.addEventListener('click', (event) => {
+        dropdownButtonEventHandler(event);
+    });
+    const dropdownButtonEventHandler = (event) => {
+        // Check if the clicked element is a dropdown item
+        if (event.target.classList.contains('cs-drop-link')) {
+            // Prevent default behavior of links
+            event.preventDefault();
 
-        // Get the text content of the clicked item
-        const selectedProjectName = event.target.textContent.trim();
+            // Get the text content of the clicked item
+            const selectedProjectName = event.target.textContent.trim();
 
-        // Pass the selected project name to the projectsPageLoader function
-        projectsPageLoader(content, selectedProjectName);
-    }
-});
+            // Pass the selected project name to the projectsPageLoader function
+            projectsPageLoader(content, selectedProjectName);
+        }
+    };
+    dropdown.removeEventListener('click', () => {
+        dropdownButtonEventHandler();
+    });
+} catch (error) {
+    console.error('Error handling dropdown buttons: ', error);
+}
 
 /**
  * Handles the click event for the "New Todo" button and opens a dialog.
  */
 try {
-    newTodoButton.addEventListener('click', async () => {
+    const handleNewTodoButtonClick = async () => {
         await dialogHandler(newTodoButton, 'newTodoButton');
+    };
+    newTodoButton.addEventListener('click', () => {
+        handleNewTodoButtonClick();
+    });
+    newTodoButton.removeEventListener('click', () => {
+        handleNewTodoButtonClick();
     });
 } catch (error) {
     handleDialogError(error);
 }
-
-
 
 /**
  * Updates the active state of navigation buttons and removes active state in mobile navigation.

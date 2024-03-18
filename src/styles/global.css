@@ -38,7 +38,7 @@ body {
 
 dialog {
     border: none !important;
-    /* margin: 0; */
+    margin: auto;
     padding: var(--sectionPadding);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);

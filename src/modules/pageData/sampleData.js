@@ -198,7 +198,6 @@ function adjustDueDatesForCurrentWeek(sampleData) {
                 dueDate.setDate(currentDay.getDate() + index);
                 todo.dueDate = dueDate.toISOString().split('T')[0];
             });
-            console.log(dueDate);
 
             currentTodoIndex += todosPerDay;
             // Increment the current day

@@ -59,7 +59,13 @@ function setupNewTodoDialog(dialog) {
     const formButton = setupFormButton(dialog, 'submit', 'Add');
 
     formButton.addEventListener('click', (event) => {
+        newFormButtonEventHandler(event);
+    });
+    const newFormButtonEventHandler = (event) => {
         todoFormInit().handleSubmit(event);
+    };
+    formButton.removeEventListener('click', () => {
+        newFormButtonEventHandler();
     });
 }
 
@@ -77,7 +83,13 @@ function setupDetailsDialog(dialog, todoData) {
     todoFormInit().populateTodoForm(todoData);
 
     formButton.addEventListener('click', (event) => {
+        detailsFormButtonEventHandler(event);
+    });
+    const detailsFormButtonEventHandler = (event) => {
         todoFormInit().handleSave(event, todoData);
+    };
+    formButton.removeEventListener('click', () => {
+        detailsFormButtonEventHandler();
     });
 }
 
@@ -105,10 +117,16 @@ function setupDialogClose(dialog) {
     const dialogClose = dialog.querySelector('#dialog-close-btn');
 
     dialogClose.addEventListener('click', () => {
+        dialogCloseEventHandler();
+    });
+    const dialogCloseEventHandler = () => {
         const formElement = dialog.querySelector('#todo-form');
         formElement.reset();
         dialog.close();
         removeDialog(dialog);
+    };
+    dialogClose.removeEventListener('click', () => {
+        dialogCloseEventHandler();
     });
 }
 

@@ -7,22 +7,15 @@ const CShamburgerMenu = document.querySelector('#cs-navigation .cs-toggle');
  * Sets up event listeners for mobile navigation toggling
  */
 export default function mobileNavigationToggling() {
-    CShamburgerMenu.addEventListener('click', () => {
-        hamburgerMenuEventHandler();
-    });
-    const hamburgerMenuEventHandler = () => {
-        classListToggle();
+    CShamburgerMenu.addEventListener('click', function () {
         CShamburgerMenu.classList.toggle('cs-active');
         CSnavbarMenu.classList.toggle('cs-active');
         CSbody.classList.toggle('cs-open');
         // run the function to check the aria-expanded value
         ariaExpanded();
-    };
-    CShamburgerMenu.removeEventListener('click', () => {
-        hamburgerMenuEventHandler();
     });
 
-    function classListToggle() {
+    function classListToggle(params) {
         CShamburgerMenu.classList.toggle('cs-active');
         CSnavbarMenu.classList.toggle('cs-active');
         CSbody.classList.toggle('cs-open');
@@ -52,6 +45,5 @@ export default function mobileNavigationToggling() {
             item.classList.toggle('cs-active');
         };
         item.addEventListener('click', onClick);
-        item.removeEventListener('click', onClick);
     }
 }

@@ -38,7 +38,7 @@ body {
 
 dialog {
     border: none !important;
-    /* margin: 0; */
+    margin: auto;
     padding: var(--sectionPadding);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
@@ -846,7 +846,7 @@ footer {
     #todo-form-container .cs-container {
         width: 100%;
         /* changes to 1280px at desktop */
-        max-width: 50rem;
+        max-width: 34rem;
         margin: auto;
         display: flex;
         flex-direction: column;
@@ -912,7 +912,6 @@ footer {
         color: var(--headerColor);
         display: flex;
         justify-content: center;
-        align-items: flex-start;
         flex-direction: column;
     }
 
@@ -1093,7 +1092,7 @@ footer {
     }
 
     #todo-form-container .cs-label {
-        width: 48%;
+        width: 100%;
     }
 
     #todo-form-container .label-note {

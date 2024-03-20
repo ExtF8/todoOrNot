@@ -56,17 +56,17 @@ function setupNewTodoDialog(dialog) {
     dialog.showModal();
     datePickerHandler();
 
-    const formButton = setupFormButton(dialog, 'submit', 'Add');
+    const todoFormHandler = todoFormInit();
+    setupFormButton(dialog, 'submit', 'Add');
+    const form = document.querySelector('#todo-form');
+    form.addEventListener('submit', newFormButtonEventHandler);
 
-    formButton.addEventListener('click', (event) => {
-        newFormButtonEventHandler(event);
-    });
-    const newFormButtonEventHandler = (event) => {
-        todoFormInit().handleSubmit(event);
-    };
-    formButton.removeEventListener('click', () => {
-        newFormButtonEventHandler();
-    });
+    function newFormButtonEventHandler(event) {
+        event.preventDefault();
+
+        todoFormHandler.handleSubmit(event);
+        form.removeEventListener('submit', newFormButtonEventHandler);
+    }
 }
 
 /**
@@ -79,6 +79,8 @@ function setupDetailsDialog(dialog, todoData) {
     dialog.showModal();
     datePickerHandler();
 
+    const todoFormHandler = todoFormInit();
+
     const formButton = setupFormButton(dialog, 'save', 'Save');
     todoFormInit().populateTodoForm(todoData);
 
@@ -86,11 +88,9 @@ function setupDetailsDialog(dialog, todoData) {
         detailsFormButtonEventHandler(event);
     });
     const detailsFormButtonEventHandler = (event) => {
-        todoFormInit().handleSave(event, todoData);
+        todoFormHandler.handleSave(event, todoData);
+        formButton.removeEventListener('click', detailsFormButtonEventHandler);
     };
-    formButton.removeEventListener('click', () => {
-        detailsFormButtonEventHandler();
-    });
 }
 
 /**
@@ -104,6 +104,7 @@ function setupDetailsDialog(dialog, todoData) {
 function setupFormButton(dialog, type, text) {
     const formButton = dialog.querySelector('#form-button');
     formButton.setAttribute('type', type);
+    console.log(formButton);
     formButton.textContent = text;
     return formButton;
 }
@@ -136,8 +137,7 @@ function setupDialogClose(dialog) {
  * @returns {TodoFormHandler} - An instance of the TodoFormHandler class.
  */
 function todoFormInit() {
-    const todoFormHandler = new TodoFormHandler(document, projectManager);
-    return todoFormHandler;
+    return new TodoFormHandler(document, projectManager);
 }
 
 /**

@@ -33,6 +33,7 @@ export class TodoFormHandler {
      */
     async handleSubmit(event) {
         event.preventDefault();
+        console.log('submit')
         try {
             const formData = this.extractFormData();
             const newTodo = this.createTodoFromFormData(formData);

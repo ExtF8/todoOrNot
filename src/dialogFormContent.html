@@ -12,7 +12,7 @@
             <p class="cs-text">title, description, dueDate and priority</p>
         </div>
         <form id="todo-form" name="New Todo" method="dialog">
-            <label class="cs-label">
+            <label class="cs-label" for="title">
                 Title
                 <input
                     class="cs-input"
@@ -23,7 +23,7 @@
                     placeholder="Title"
                 />
             </label>
-            <label class="cs-label" id="project-container">
+            <label class="cs-label" id="project-container" for="project">
                 Project
                 <input
                     class="cs-input project-container-input"
@@ -31,6 +31,7 @@
                     id="project"
                     name="project"
                     placeholder="Create new or add to existing project"
+                    required
                 />
                 <!-- <button
                     class="add-project-button"
@@ -41,7 +42,7 @@
                     +
                 </button> -->
             </label>
-            <label class="cs-label">
+            <label class="cs-label" for="description">
                 Description
                 <input
                     class="cs-input"
@@ -49,6 +50,7 @@
                     id="description"
                     name="description"
                     placeholder="Why?"
+                    required
                 />
             </label>
             <label class="cs-label" for="dueDate">
@@ -81,7 +83,6 @@
                         type="radio"
                         value="medium"
                         id="priority-medium"
-                        required
                     />
                     <label for="priority-medium" class="priority-button medium">
                         Medium
@@ -99,7 +100,9 @@
                 </div>
             </div>
 
-            <button class="cs-button-solid cs-submit" type="" id="form-button">Add</button>
+            <button class="cs-button-solid cs-submit" type="" id="form-button">
+                Add
+            </button>
         </form>
     </div>
 </section>

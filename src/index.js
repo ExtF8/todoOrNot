@@ -53,11 +53,9 @@ try {
     navigationButtons.forEach((navigationButton) => {
         const button = document.getElementById(navigationButton);
 
-        button.addEventListener('click', () => {
-            buttonEventHandler();
-        });
+        button.addEventListener('click', buttonEventHandler);
 
-        const buttonEventHandler = () => {
+        function buttonEventHandler() {
             switch (navigationButton) {
                 case 'home':
                     homePageLoader(content);
@@ -72,11 +70,7 @@ try {
                     homePageLoader(content); // Default page if page is not specified
             }
             updateNavigationActiveState(navigationButton);
-        };
-
-        button.removeEventListener('click', () => {
-            buttonEventHandler();
-        });
+        }
     });
 } catch (error) {
     console.error(
@@ -91,10 +85,9 @@ try {
 try {
     // Add event listeners to Project dropdown items
     const dropdown = document.getElementById('projects');
-    dropdown.addEventListener('click', (event) => {
-        dropdownButtonEventHandler(event);
-    });
-    const dropdownButtonEventHandler = (event) => {
+    dropdown.addEventListener('click', dropdownButtonEventHandler);
+
+    function dropdownButtonEventHandler(event) {
         // Check if the clicked element is a dropdown item
         if (event.target.classList.contains('cs-drop-link')) {
             // Prevent default behavior of links
@@ -106,10 +99,7 @@ try {
             // Pass the selected project name to the projectsPageLoader function
             projectsPageLoader(content, selectedProjectName);
         }
-    };
-    dropdown.removeEventListener('click', () => {
-        dropdownButtonEventHandler();
-    });
+    }
 } catch (error) {
     console.error('Error handling dropdown buttons: ', error);
 }
@@ -122,9 +112,6 @@ try {
         await dialogHandler(newTodoButton, 'newTodoButton');
     };
     newTodoButton.addEventListener('click', () => {
-        handleNewTodoButtonClick();
-    });
-    newTodoButton.removeEventListener('click', () => {
         handleNewTodoButtonClick();
     });
 } catch (error) {

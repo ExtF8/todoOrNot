@@ -100,11 +100,14 @@ export class TodoManager {
             todoDueDate.style.textDecoration = 'line-through';
         }
 
-        checkbox.addEventListener('click', (event) => {
+        // Function to handle checkbox click event
+        const handleCheckBoxClick = (event) => {
             event.preventDefault();
-            handleCheckBoxClick();
-        });
-        const handleCheckBoxClick = () => {
+            handleCheckBox();
+        };
+
+        // Function to toggle completion status and update visual representation
+        const handleCheckBox = () => {
             // Toggle the 'todo-checked' class
             checkbox.classList.toggle('todo-checked');
 
@@ -118,9 +121,65 @@ export class TodoManager {
             // Update todo completion status in local storage
             this.updateTodoCompletion(todoId, isCompleted);
         };
-        checkbox.removeEventListener('click', () => {
-            handleCheckBoxClick();
-        });
+
+        // Add event listener to checkbox
+        checkbox.addEventListener('click', handleCheckBoxClick);
+
+        // Function to remove event listener from checkbox
+        const removeEventListenerFromCheckBox = () => {
+            checkbox.removeEventListener('click', handleCheckBoxClick);
+        };
+
+        return removeEventListenerFromCheckBox;
+    }
+
+    /**
+     * Handles the details button click event for a Todo item.
+     *
+     * @param {HTMLElement} todoDetails - The details button element.
+     * @param {HTMLElement} todoDetailsId - The details ID element.
+     * @param {number} id - The ID of the Todo item.
+     */
+    todoDetailsHandler(todoDetails, todoDetailsId, id) {
+        // Function to handle details button click event
+        const handleDetailsButtonClick = (event) => {
+            event.preventDefault();
+            handleDetails();
+        };
+
+        // Function to handle details action
+        const handleDetails = async () => {
+            try {
+                // Retrieve todo data from local storage based on todo ID
+                const existingData =
+                    getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+                const todoData = this.findTodoById(existingData, id);
+
+                if (!todoData) {
+                    console.error(
+                        'Todo with id: ',
+                        id,
+                        'not found in local storage'
+                    );
+                    return;
+                }
+
+                // Open dialog with Todo details
+                await dialogHandler(todoDetails, todoDetailsId, todoData);
+            } catch (error) {
+                console.error('Error handling details click: ', error);
+            }
+        };
+
+        // Add event listener to details button
+        todoDetails.addEventListener('click', handleDetailsButtonClick);
+
+        // Function to remove event listener from details button
+        const removeEventListenerFromDetails = () => {
+            todoDetails.removeEventListener('click', handleDetailsButtonClick);
+        };
+
+        return removeEventListenerFromDetails;
     }
 
     /**
@@ -131,32 +190,62 @@ export class TodoManager {
      * @param {string} projectName - The project name of the Todo item.
      */
     todoDeleteHandler(todoDelete, todoId, projectName) {
-        todoDelete.addEventListener('click', (event) => {
+        // Function to handle delete button click event
+        const handleDeleteButtonClick = (event) => {
             event.preventDefault();
-            handleDeleteButtonClick();
-        });
-        const handleDeleteButtonClick = () => {
+            handleDelete();
+        };
+
+        // Function to handle delete action
+        const handleDelete = () => {
             const todoToRemove = todoId;
 
-            let existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+            // Remove event listener from delete button
+            todoDelete.removeEventListener('click', handleDeleteButtonClick);
 
-            let updatedData = removeTodoFromLocalStorage(
-                existingData,
-                todoToRemove
-            );
+            // Remove event listeners for checkbox and details buttons
+            const checkbox = document.getElementById(`checkbox-${todoId}`);
+            const detailsButton = document.getElementById(`details-${todoId}`);
 
-            saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
+            if (checkbox && detailsButton) {
+                const checkboxRemoveEventListener = this.checkboxHandler(
+                    checkbox,
+                    this.todoTitle,
+                    this.todoDueDate,
+                    this.todoId
+                );
+                const detailsRemoveEventListener = this.todoDetailsHandler(
+                    detailsButton,
+                    this.todoDetailsId,
+                    this.todoId
+                );
 
-            projectManager.removeTodoFromProject(projectName, todoToRemove);
+                // Remove the event listeners before deleting todo item
+                checkboxRemoveEventListener();
+                detailsRemoveEventListener();
 
-            const section = document.querySelector('#content');
-            const todoContainer = renderContainer(existingData);
-            clearPage(section);
-            section.appendChild(todoContainer);
+                // Remove todo item from local storage
+                let existingData =
+                    getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
+                let updatedData = removeTodoFromLocalStorage(
+                    existingData,
+                    todoToRemove
+                );
+                saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
+
+                // Remove todo item from project manager
+                projectManager.removeTodoFromProject(projectName, todoToRemove);
+
+                // Re-render the page
+                const section = document.querySelector('#content');
+                const todoContainer = renderContainer(existingData);
+                clearPage(section);
+                section.appendChild(todoContainer);
+            }
         };
-        todoDelete.removeEventListener('click', () => {
-            handleDeleteButtonClick();
-        });
+
+        // Add event listener to delete button
+        todoDelete.addEventListener('click', handleDeleteButtonClick);
     }
 
     /**
@@ -176,6 +265,7 @@ export class TodoManager {
                 return;
             }
 
+            // Update completion status of the Todo item in local storage
             const updatedData = existingData.map((project) => ({
                 ...project,
                 todos: project.todos.map((todo) => {
@@ -186,48 +276,11 @@ export class TodoManager {
                 }),
             }));
 
+            // Save update data to local storage
             saveDataToLocalStorage(PROJECTS_STORAGE_KEY, updatedData);
         } catch (error) {
             console.error(error);
         }
-    }
-
-    /**
-     * Handles the details button click event for a Todo item.
-     *
-     * @param {HTMLElement} todoDetails - The details button element.
-     * @param {HTMLElement} todoDetailsId - The details ID element.
-     * @param {number} id - The ID of the Todo item.
-     */
-    todoDetailsHandler(todoDetails, todoDetailsId, id) {
-        todoDetails.addEventListener('click', (event) => {
-            event.preventDefault();
-            handleDetailsButtonClick();
-        });
-        const handleDetailsButtonClick = async () => {
-            try {
-                // Retrieve todo data from local storage based on todo ID
-                const existingData =
-                    getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
-                const todoData = this.findTodoById(existingData, id);
-
-                if (!todoData) {
-                    console.error(
-                        'Todo with id: ',
-                        id,
-                        'not found in local storage'
-                    );
-                    return;
-                }
-
-                await dialogHandler(todoDetails, todoDetailsId, todoData); // Pass details element and its id
-            } catch (error) {
-                console.error('Error handling details click: ', error);
-            }
-        };
-        todoDetails.removeEventListener('click', () => {
-            handleDetailsButtonClick();
-        });
     }
 
     /**
@@ -326,7 +379,6 @@ export class TodoManager {
      * @returns {Array|null} - An array of todos for the specified project, or null if the project is not found.
      */
     getTodosForProject(existingData, projectName) {
-        // const existingData = getDataFromLocalStorage(PROJECTS_STORAGE_KEY);
         if (!existingData) {
             console.error('No existing data found in local storage');
             return null;

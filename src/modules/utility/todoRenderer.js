@@ -10,7 +10,6 @@ import {
 import { sampleData } from '../pageData/sampleData.js';
 import { TodoManager } from '../entities/todoItems.js';
 
-
 /**
  * Renders the primary container for the home page.
  *
@@ -93,13 +92,15 @@ export function renderTodoContent(todo) {
     const todoDetails = createDiv('class', 'todo-item');
     const todoDelete = createDiv('class', 'todo-item');
 
+    checkbox.id = 'checkbox-' + todo.id;
+
     todoDetails.classList.add('details');
     todoDetails.textContent = 'Details';
-    todoDetails.id = todo.id + 'details';
+    todoDetails.id = 'details-' + todo.id;
     const todoDetailsId = todoDetails.id;
 
     todoDelete.classList.add('delete');
-    todoDelete.id = todo.id + 'delete';
+    todoDelete.id = 'delete-' + todo.id;
 
     const todoManager = new TodoManager(
         todo.id,

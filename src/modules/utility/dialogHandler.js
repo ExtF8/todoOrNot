@@ -63,8 +63,8 @@ function setupNewTodoDialog(dialog) {
 
     function newFormButtonEventHandler(event) {
         event.preventDefault();
-
         todoFormHandler.handleSubmit(event);
+
         form.removeEventListener('submit', newFormButtonEventHandler);
     }
 }
@@ -82,13 +82,15 @@ function setupDetailsDialog(dialog, todoData) {
     const todoFormHandler = todoFormInit();
 
     const formButton = setupFormButton(dialog, 'save', 'Save');
-    todoFormInit().populateTodoForm(todoData);
+    todoFormHandler.populateTodoForm(todoData);
 
     formButton.addEventListener('click', (event) => {
         detailsFormButtonEventHandler(event);
     });
+
     const detailsFormButtonEventHandler = (event) => {
         todoFormHandler.handleSave(event, todoData);
+
         formButton.removeEventListener('click', detailsFormButtonEventHandler);
     };
 }
@@ -104,8 +106,8 @@ function setupDetailsDialog(dialog, todoData) {
 function setupFormButton(dialog, type, text) {
     const formButton = dialog.querySelector('#form-button');
     formButton.setAttribute('type', type);
-    console.log(formButton);
     formButton.textContent = text;
+
     return formButton;
 }
 
@@ -117,18 +119,16 @@ function setupFormButton(dialog, type, text) {
 function setupDialogClose(dialog) {
     const dialogClose = dialog.querySelector('#dialog-close-btn');
 
-    dialogClose.addEventListener('click', () => {
-        dialogCloseEventHandler();
-    });
-    const dialogCloseEventHandler = () => {
+    dialogClose.addEventListener('click', dialogCloseEventHandler);
+
+    function dialogCloseEventHandler() {
         const formElement = dialog.querySelector('#todo-form');
         formElement.reset();
         dialog.close();
         removeDialog(dialog);
-    };
-    dialogClose.removeEventListener('click', () => {
-        dialogCloseEventHandler();
-    });
+
+        dialogClose.removeEventListener('click', dialogCloseEventHandler);
+    }
 }
 
 /**

@@ -122,8 +122,7 @@ export const sampleData = {
                     id: 1111,
                     title: 'Plan itinerary',
                     project: 'Vacation Planning',
-                    description:
-                        'Research attractions and create a travel plan',
+                    description: 'Research attractions and create a travel plan',
                     dueDate: '',
                     priority: 'high',
                     completed: false,
@@ -141,8 +140,7 @@ export const sampleData = {
                     id: 1313,
                     title: 'Check travel documents',
                     project: 'Vacation Planning',
-                    description:
-                        'Ensure passports, visas, and tickets are ready',
+                    description: 'Ensure passports, visas, and tickets are ready',
                     dueDate: '',
                     priority: 'high',
                     completed: false,
@@ -163,48 +161,47 @@ export const sampleData = {
 
 /**
  * Adjusts the due dates of todos in the sample data to distribute them evenly across the current week.
- * Week starts with Monday.
+ * The week starts on Monday.
  *
  * @param {Object} sampleData - The sample data object containing projects and todos.
  */
-function adjustDueDatesForCurrentWeek(sampleData) {
-    // Get the current date
+function adjustDueDatesToIncludeCurrentDay(sampleData) {
+    // Get the current date and set the time to the start of the day
     const currentDate = new Date();
-    // Adjust to Monday it it's not already Monday
-    const currentDayOfWeek = currentDate.getDay();
-    if (currentDayOfWeek !== 1) {
-        const difference = currentDayOfWeek - 1;
-        currentDate.setDate(currentDate.getDate() - difference);
-    }
+    currentDate.setHours(0, 0, 0, 0);
 
-    // Calculate the total number of days in the current week
-    const totalDays = 7;
+    // Set up the total number of days in the current week and next week (14 days)
+    const totalDays = 14;
 
-    // Distribute the todos evenly across the days of the week
+    // Iterate over projects and assign some Todos to the current day,
+    // then distribute the rest over the next 13 days.
     let currentDay = new Date(currentDate);
-    sampleData.projects.forEach((project) => {
+    sampleData.projects.forEach(project => {
         const todos = project.todos;
-        const todosPerDay = Math.ceil(todos.length / totalDays);
-        let currentTodoIndex = 0;
+        const totalTodos = todos.length;
 
-        for (let i = 0; i < totalDays; i++) {
-            const todosForCurrentDay = todos.slice(
-                currentTodoIndex,
-                currentTodoIndex + todosPerDay
-            );
+        // Assign some todos to the current day
+        const todosForToday = Math.min(3, totalTodos);
+        for (let i = 0; i < todosForToday; i++) {
+            todos[i].dueDate = currentDate.toISOString().split('T')[0];
+        }
+
+        // Distribute the remaining todos over the next 13 days
+        let currentTodoIndex = todosForToday;
+        for (let i = 1; i < totalDays; i++) {
+            // Stop if all Todos are assigned
+            if (currentTodoIndex >= totalTodos) break;
+
+            // Create a new date for dueDate to avoid reference issues
             const dueDate = new Date(currentDay);
-            todosForCurrentDay.forEach((todo, index) => {
-                // Calculate due date based on index to evenly distribute todos
-                dueDate.setDate(currentDay.getDate() + index);
-                todo.dueDate = dueDate.toISOString().split('T')[0];
-            });
+            todos[currentTodoIndex].dueDate = dueDate.toISOString().split('T')[0];
+            currentTodoIndex++;
 
-            currentTodoIndex += todosPerDay;
-            // Increment the current day
+            // Increment the current day by 1 for the next iteration
             currentDay.setDate(currentDay.getDate() + 1);
         }
     });
 }
 
 // Call the function with the sampleData
-adjustDueDatesForCurrentWeek(sampleData);
+adjustDueDatesToIncludeCurrentDay(sampleData);

@@ -122,7 +122,8 @@ export const sampleData = {
                     id: 1111,
                     title: 'Plan itinerary',
                     project: 'Vacation Planning',
-                    description: 'Research attractions and create a travel plan',
+                    description:
+                        'Research attractions and create a travel plan',
                     dueDate: '',
                     priority: 'high',
                     completed: false,
@@ -140,7 +141,8 @@ export const sampleData = {
                     id: 1313,
                     title: 'Check travel documents',
                     project: 'Vacation Planning',
-                    description: 'Ensure passports, visas, and tickets are ready',
+                    description:
+                        'Ensure passports, visas, and tickets are ready',
                     dueDate: '',
                     priority: 'high',
                     completed: false,
